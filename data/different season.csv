@@ -1,0 +1,52 @@
+State,Agency name,1st quarter,2nd quarter,3rd quarter,4th quarter,Total Number
+New_York,New York,56,84,81,93,314
+Massachusetts,Boston,39,56,40,30,165
+Ohio,Columbus,8,22,60,46,136
+California,Los Angeles,21,40,25,28,114
+Washington,Seattle,19,23,29,18,89
+New_York,Suffolk County Police Department,11,33,22,21,87
+Arizona,Phoenix,25,21,35,0,81
+DC,Washington,19,21,20,10,70
+Nevada,Las Vegas Metropolitan Police Department,16,13,18,18,65
+Missouri,Kansas City,13,17,21,12,63
+California,Los Angeles,14,10,11,15,50
+Tennessee,Shelby,2,7,20,17,46
+Illinois,Chicago,11,10,15,9,45
+California,San Diego,7,10,17,9,43
+Indiana,Indianapolis,8,15,16,4,43
+New_York,Nassau,9,16,9,9,43
+Minnesota,Minneapolis,6,13,11,9,39
+Colorado,Denver,3,13,9,5,30
+Minnesota,St. Paul,0,18,11,1,30
+Georgia,Cobb County Police Department,1,12,8,6,27
+Kentucky,Lexington,5,10,10,2,27
+Arizona,Tucson,8,8,6,4,26
+California,San Francisco,4,8,8,4,24
+Tennessee,Memphis,6,5,9,4,24
+New_Jersey,Lakewood Township,2,6,7,8,23
+Georgia,Atlanta,8,11,2,0,21
+North_Carolina,Charlotte-Mecklenburg,10,4,2,5,21
+New_Jersey,Howell Township,2,7,5,4,18
+Texas,Dallas,2,4,9,3,18
+Michigan,Oakland,5,4,5,3,17
+New_York,Buffalo,6,3,4,4,17
+New_York,New York City Metropolitan Transportation Authority,4,5,4,4,17
+Tennessee,Covington,3,1,5,8,17
+California,Riverside,7,4,0,5,16
+California,Sacramento,2,5,6,3,16
+Massachusetts,Lynn,1,5,6,4,16
+Ohio,Cincinnati,4,0,2,10,16
+Pennsylvania,Philadelphia,3,11,1,1,16
+Texas,Fort Worth,5,1,6,4,16
+California,San Jose,7,1,2,5,15
+Nebraska,Lincoln,5,3,2,5,15
+Oregon,Eugene,1,9,1,4,15
+Pennsylvania,Pittsburgh,1,3,8,3,15
+Kansas,Wichita,4,4,4,2,14
+Michigan,Dearborn,7,4,2,1,14
+New_Jersey,East Brunswick Township,3,4,3,4,14
+New_Jersey,Neptune Township,0,8,2,4,14
+North_Dakota,Fargo,2,3,6,3,14
+Oregon,Salem,9,3,2,0,14
+West_Virginia,Oak Hill,0,6,8,0,14
+,,414,604,615,471,2104
