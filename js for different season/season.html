@@ -3,13 +3,173 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
-body { font-family: "Open Sans"; }
-svg { }
-
+	body { font-family: "Open Sans"; }
+    div { margin: 30px; }
+    svg { border: solid #DCDCDC 1px;
+         background-color: #FFFFFF; }
+    path {  stroke: black; stroke-width: 2; }
+    circle{ fill: none; stroke: black; stroke-width: 2;}
+    line { stroke: black;}
+    text { font-size: 10px; }
+    .button {
+    	position: relative;
+	    background-color: #4CAF50;
+	    border: none;
+	    font-size: 28px;
+	    color: #FFFFFF;
+	    padding: 20px;
+	    width: 200px;
+	    text-align: center;
+	    -webkit-transition-duration: 0.4s; /* Safari */
+	    transition-duration: 0.4s;
+	    text-decoration: none;
+	    overflow: hidden;
+	    cursor: pointer;
+    }
+    .button:after {
+	    content: "";
+	    background: #90EE90;
+	    display: block;
+	    position: absolute;
+	    padding-top: 300%;
+	    padding-left: 350%;
+	    margin-left: -20px!important;
+	    margin-top: -120%;
+	    opacity: 0;
+	    transition: all 0.8s
+	}
+	.button:active:after {
+	    padding: 0;
+	    margin: 0;
+	    opacity: 1;
+	    transition: 0s
+	}
+    
 </style>
 </head>
 <body>
 	<div id = "Season"></div>
-	
+	<button class = "button" onclick = "total()">Total</button>
+	<button class = "button" onclick = "spring()">Spring</button>
+	<button class = "button" onclick = "summer()">Summer</button>
+	<button class = "button" onclick = "fall()">Fall</button>
+	<button class = "button" onclick = "winter()">Winter</button>
+
+	<script type="text/javascript">
+	    var padding = 35;
+        var height = 250;
+        var width = 1000;
+        var svg = d3.select("#Season").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+        //from showcase raw code
+        // svg.append("circle")
+        // .attr("cx", 50)
+        // .attr("cy", 11.705)
+        // .attr("r", 11.705);
+        // svg.append("path")
+        // .attr("d","M66.789,57.198c2.449,0,4.055-2.856,3.569-6.347l-2.441-17.534c-0.486-3.491-3.768-6.347-7.292-6.347H39.374  c-3.524,0-6.806,2.856-7.292,6.347l-2.44,17.534c-0.486,3.491,1.12,6.347,3.569,6.347s4.667,2.876,4.929,6.391l2.242,30.021  c0.262,3.515,3.361,6.391,6.885,6.391h5.467c3.524,0,6.623-2.876,6.885-6.391l2.24-30.021C62.121,60.074,64.34,57.198,66.789,57.198  z");
+        //from svg generator without simplify "flying"
+        // svg.append("path")
+        // .attr("transform","translate(200,0)")
+        // .attr("d","M57.778,128h12.445c5.400000000000006,0,9.778000000000006,-4.378,9.778000000000006,-9.778000000000006v-22.221999999999994h4.725999999999999c5.950000000000003,0,10.521,-5.269999999999996,9.679000000000002,-11.161000000000001l-5.205999999999946,-27.45226426464633c-0.6880000000000592,-4.816999999999986,75.05477035515825,-42.24624041542663,-9.679000000000059,-17.386735735353668h-31.04c-4.866,0,-74.04885267340713,-23.926132837528513,-9.15007436850874,16.85781010387673l-5.734925631491258,27.98118989612327c-0.8420000000000059,5.891000000000005,3.728999999999992,11.161000000000001,9.678999999999995,11.161000000000001h4.725999999999999v22.22200000000001c0,5.400000000000006,4.378,9.777999999999992,9.777999999999999,9.777999999999992Z");
+
+	    for (var j = 0; j < 5; j++) {
+            ty = j * 150;
+
+	        for (var i = 0; i < 21; i++) {
+	        	var tx = i * 110;
+
+		        svg.append("path")
+		        .attr("id","person0_"+ (j*21 +i))
+		        .attr("transform","scale(0.3),translate(" + (tx + 500) + "," + (ty + 50) + ")")
+		        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+		        .attr("fill","none");
+
+		        svg.append("path")
+		        .attr("id","person1_"+ (j*21 +i))
+		        .attr("transform","scale(0.3),translate(" + (tx + 500) + ","  + (ty + 50) + ")")
+		        .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
+		        .attr("fill","none");
+	        }
+	    } 
+
+       var total = function() {
+
+	       	for (var j = 0; j < 5; j++) {
+	            ty = j * 150;
+
+		        for (var i = 0; i < 21; i++) {
+		        	var tx = i * 110;
+
+			        svg.append("path")
+			        .attr("id","personChosen0_"+ (j*21 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 500) + "," + (ty + 50) + ")")
+			        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+			        .attr("fill","black");
+
+			        svg.append("path")
+			        .attr("id","personChosen1_"+ (j*21 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 500) + ","  + (ty + 50) + ")")
+			        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+			        .attr("fill","black");
+		        }
+		    } 
+
+       }
+
+       var spring = function() {
+
+	       	for (var j = 0; j < 1; j++) {
+	            ty = j * 150;
+
+		        for (var i = 0; i < 21; i++) {
+		        	var tx = i * 110;
+
+			        svg.append("path")
+			        .attr("id","personChosen0_"+ (j*21 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 500) + "," + (ty + 50) + ")")
+			        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+			        .attr("fill","green");
+
+			        svg.append("path")
+			        .attr("id","personChosen1_"+ (j*21 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 500) + ","  + (ty + 50) + ")")
+			        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+			        .attr("fill","green");
+		        }
+		    } 
+
+       }
+
+       var summer = function() {
+
+	       	for (var j = 1; j < 2; j++) {
+	            ty = j * 150;
+
+		        for (var i = 0; i < 21; i++) {
+		        	var tx = i * 110;
+
+			        svg.append("path")
+			        .attr("id","personChosen0_"+ (j*21 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 500) + "," + (ty + 50) + ")")
+			        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+			        .attr("fill","red");
+
+			        svg.append("path")
+			        .attr("id","personChosen1_"+ (j*21 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 500) + ","  + (ty + 50) + ")")
+			        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+			        .attr("fill","red");
+		        }
+		    } 
+
+       }
+
+       
+
+	</script>
+
 
 </body>
