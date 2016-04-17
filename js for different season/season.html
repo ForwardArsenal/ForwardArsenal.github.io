@@ -6,7 +6,8 @@
 	body { font-family: "Open Sans"; }
     div { margin: 30px; }
     svg { border: solid #DCDCDC 1px;
-         background-color: #FFFFFF; }
+          background-color: #FFFFFF;
+          margin-left:auto; margin-right:auto; display:block;}
     path {  stroke: black; stroke-width: 2; }
     circle{ fill: none; stroke: black; stroke-width: 2;}
     line { stroke: black;}
@@ -15,11 +16,11 @@
     	position: relative;
 	    background-color: #FFFFFF;
 	    border: none;
-	    font-size: 20px;
+	    font-size: 15px;
 	    color: #000000;
-	    padding: 10px;
-	    height: 50;
-	    width: 150px;
+	    padding: 10px 10px;
+	    height: 40;
+	    width: 120px;
 	    border: solid #000000 1px;
 	    text-align: center;
 	    vertical-align: center;
@@ -28,10 +29,11 @@
 	    text-decoration: none;
 	    overflow: hidden;
 	    cursor: pointer;
+	    border-radius: 8px;
     }
     .button:after {
 	    content: "";
-	    background: #FFFFAFA;
+	    background: #66FFE6;
 	    display: block;
 	    position: absolute;
 	    padding-top: 300%;
@@ -47,17 +49,25 @@
 	    opacity: 1;
 	    transition: 0s
 	}
-    
+	.button:hover {
+    background-color: #E0FFFF; 
+    color: black;
+    }
+    .center {
+    	text-align: center;
+    	margin-left:auto; margin-right:auto; display:block;
+    }    
 </style>
 </head>
 <body>
 	<div id = "Season"></div>
-	The precentage for this choice to all hate crime cases is <div id = "precentage"></div>
-	<button class = "button" onclick = "total()">Total</button>
-	<button class = "button" onclick = "spring()">Spring</button>
-	<button class = "button" onclick = "summer()">Summer</button>
-	<button class = "button" onclick = "fall()">Fall</button>
-	<button class = "button" onclick = "winter()">Winter</button>
+	<p class = "center">The precentage for this choice to all hate crime cases is </p>
+	<div id = "precentage" class = "center"></div>
+	<button class = "button" onclick = "total()" style="position:relative; left:320px;">Total</button>
+	<button class = "button" onclick = "spring()" style="position:relative; left:320px;">Spring</button>
+	<button class = "button" onclick = "summer()" style="position:relative; left:320px;">Summer</button>
+	<button class = "button" onclick = "fall()" style="position:relative; left:320px;">Fall</button>
+	<button class = "button" onclick = "winter()" style="position:relative; left:320px;">Winter</button>
 
 	<script type="text/javascript">
 	    var padding = 35;
@@ -101,7 +111,9 @@
 			        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
 			        .attr("fill","none")
 			        .attr("display","hidden");
+
 			    document.getElementById("personChosen1_"+ (j*21 +i)).style.visibility = "hidden";
+			    document.getElementById("precentage").innerHTML = "0 %";
 	        }
 	    } 
 
@@ -109,11 +121,11 @@
 	    
 		    for (var i = 0; i < 105; i++) {
 			    document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen0_"+ i).style.fill = "black";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#4D3900";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen1_"+ i).style.fill = "black";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#4D3900";
 		    }
-		    document.getElementById("precentage").innerHTML = "100%";
+		    document.getElementById("precentage").innerHTML = "100 %";
 
         }
 
@@ -121,15 +133,15 @@
 
 	       	for (var i = 0; i < 21; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen0_"+ i).style.fill = "green";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#00FA9A";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen1_"+ i).style.fill = "green";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#00FA9A";
 	       	}
 	       	for (var i = 21; i < 105; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	}
-	       	document.getElementById("precentage").innerHTML = "19.7%";
+	       	document.getElementById("precentage").innerHTML = "19.7 %";
 	       	
         }
 
@@ -142,15 +154,15 @@
 
 	       	for (var i = 21; i < 51; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen0_"+ i).style.fill = "red";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#DE3163";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen1_"+ i).style.fill = "red";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#DE3163";
 	       	}
 	       	for (var i = 51; i < 105; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	} 
-	       	document.getElementById("precentage").innerHTML = "28.7%";
+	       	document.getElementById("precentage").innerHTML = "28.7 %";
 
         }
 
@@ -171,7 +183,7 @@
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	}
-	       	document.getElementById("precentage").innerHTML = "29.2%";  
+	       	document.getElementById("precentage").innerHTML = "29.2 %";  
 
         }
 
@@ -184,16 +196,14 @@
 
 	       	for (var i = 82; i < 105; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen0_"+ i).style.fill = "blue";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#87CEFA";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-			    document.getElementById("personChosen1_"+ i).style.fill = "blue";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#87CEFA";
 	       	}
-	       	document.getElementById("precentage").innerHTML = "22.4%";
+	       	document.getElementById("precentage").innerHTML = "22.4 %";
 
         }
-
-       
-
+      
 	</script>
 
 
