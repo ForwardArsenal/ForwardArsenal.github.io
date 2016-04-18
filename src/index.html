@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<style>
+    .panel-info { height: 500px; width: 200px; }
+    .panel-heading { height: 60px; width: 140px; }
+    .heading-text { font-family: "Comic Sans MS"; text-align: center;}
+    .info-heading { height: 40px; width: 180px; margin-left: 24px; }
+    .btn-text { font-family: "Comic Sans MS"; }
+    .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; }
+    .btn { margin-bottom: 10px; padding-left: 10px;}
+    .panel-success { height: 430px; width: 230px; }
+    /*
+    @-webkit-keyframes twinkling{   
+       0% { opacity: 0; }  
+       100% { opacity: 1; }  
+    } 
+    .blinking-dot {  
+    	-webkit-animation: twinkling 1.5s infinite ease-in-out; 
+    }
+    */
+    .tooltip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+    #panel { float: left; }
+    #map { float: left; }
+    #info { float: left; }
+    body { font-family: "Open Sans" } div{ margin: 30px; }
+    svg { background-color: #f0f0f0; }
+    .state-boundary { fill: none; stroke: #ccc; }
+    .state-name { fill: #777; fill-opacity: .5; font-size: 8px; font-weight: 300; text-anchor: middle; }
+    .location { fill: red; fill-opacity: .8; }
+    .well { position: static; margin-top: 30px; height: 70px; width: 180px; margin-left: 0px;}
+    .well-text { font-family: "Comic Sans MS"; padding-left: 23px; color: #F7356A; font-size: 9px; }
+</style>
+</head>
+<body>
+<div id="panel" class="panel panel-info">
+	<div class="panel-heading heading-text">Select a crime type to display!
+	</div>
+    <div class="panel-body">
+    	<button id="race" type="button" class="btn btn-primary btn-block btn-text">Race</button>
+    	<button id="religion" type="button" class="btn btn-primary btn-block btn-text">Religion</button>
+    	<button id="sex" type="button" class="btn btn-primary btn-block btn-text">Sexual Orientation</button>
+    	<button id="ethnicity" type="button" class="btn btn-primary btn-block btn-text">Ethnicity</button>
+    	<button id="disability" type="button" class="btn btn-primary btn-block btn-text">Disability</button>
+    	<button id="gender" type="button" class="btn btn-primary btn-block btn-text">Gender</button>
+    	<button id="genderIdentity" type="button" class="btn btn-primary btn-block btn-text">Gender Identity</button>  
+    </div>
+</div>
+<div id="map"></div>
+<div id="info" class="panel panel-success" style="visibility: hidden">
+	<div class="panel-heading heading-text info-heading">Hate Crime Info</div>
+    <div class="panel-body">
+    	<div id="city" class="well well-text" style="text-align: center"></div>
+    	<div id="population" class="well well-text" style="text-align: center"></div>
+    	<div id="crime" class="well well-text" style="text-align: center"></div>
+    </div>
+</div>
+<script>
+var width = 650;
+var height = 450;
+
+var projection = d3.geo.albersUsa().scale(820).translate([width/2, height/2]);
+
+var path = d3.geo.path().projection(projection);
+
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var states;
+d3.json("../data/us.json", function(error, shapes){
+	if(error){ console.log(error); }
+    states = topojson.feature(shapes, shapes.objects.states).features;
+    var statePaths = svg.append("g");
+    statePaths.selectAll("path").data(states).enter()
+    .append("path")
+    .attr("d", path)
+    .attr("class", "state-boundary");
+    
+    d3.tsv("../data/us-state-names.tsv", function(rows){
+    	var names = {};
+    	rows.forEach(function(d, i){
+            names[d.id] = d.name;
+    	});
+        //filtered NaN values
+        var filteredStates = states.filter(function(state){ return isNaN(path.centroid(state)[0])!=true && isNaN(path.centroid(state)[1])!=true; });
+    	//add state names
+    	var stateNames = svg.append("g");
+    	
+    	stateNames.selectAll("text")
+    	.data(filteredStates).enter()
+    	.append("text")
+    	.attr("x", function(d){ return path.centroid(d)[0]; })
+    	.attr("y", function(d){ return path.centroid(d)[1]; })
+    	.attr("class", "state-name")
+    	.text(function(d){ return names[d.id]; });
+    	
+    });
+});
+
+d3.csv("../data/hate-crime.csv", function(error, rows){
+	if(error){ console.log(error); }
+    //race 30 disability 10 gender 4 gender identity 10 religion 20
+    d3.select("#race").on("click", function(){ 
+    	svg.selectAll("circle").remove();
+    	displayLocations(rows, "Race", 40) 
+    });
+
+    d3.select("#religion").on("click", function(){ 
+    	svg.selectAll("circle").remove();
+    	displayLocations(rows, "Religion", 20)
+    });
+
+    d3.select("#sex").on("click", function(){
+        svg.selectAll("circle").remove();
+        displayLocations(rows, "Sexual Orientation", 20);
+    });
+
+    d3.select("#ethnicity").on("click", function(){
+        svg.selectAll("circle").remove();
+        displayLocations(rows, "Ethnicity", 20);
+    });
+
+    d3.select("#disability").on("click", function(){
+        svg.selectAll("circle").remove();
+        displayLocations(rows, "Disability", 10);
+    });
+
+    d3.select("#gender").on("click", function(){
+        svg.selectAll("circle").remove();
+        displayLocations(rows, "Gender", 4);
+    });
+
+    d3.select("#genderIdentity").on("click", function(){
+        svg.selectAll("circle").remove();
+        displayLocations(rows, "Gender Identity", 10);
+    });
+});
+
+function displayLocations(rows, crimeType, topNum){
+    var arr = [];
+    //extract relevant values from the csv files
+    rows.forEach(function(row){
+    	arr.push({ stateCode: row["State Code"], city: row["Agency Name"], crime: row[crimeType], population: row["Population"]});
+    });
+    //filter the result array be selecting the topNum cities
+    arr.sort(function(a, b){
+    	return b.crime-a.crime;
+    });
+    var filteredCities = arr.slice(0, topNum);
+    //add color linear gradient scale
+    var colorScale = d3.scale.linear()
+    .domain(d3.extent(filteredCities, function(d){ return Number(d.crime); }))
+    .range(["#feb24c", "#de2d26"]);
+    //console.log(filteredCities);
+    //add longitude and latitude to every city in the filtered array
+    d3.csv("../data/us-cities.csv", function(error, cities){
+        if(error){ console.log(error); }
+        filteredCities.forEach(function(d){
+        	var city = cities.find(function(c){
+        		return d.stateCode == c.state && d.city == c.city;
+        	});
+        	//if(typeof city != undefined) console.log("true!");
+        	d["longitude"] = city.lng;
+        	d["latitude"] = city.lat;
+        });
+        //display the locations
+        var locations = svg.append("g").attr("id", "locations");
+        locations.selectAll("circle").data(filteredCities)
+        .enter()
+        .append("circle")
+        //.attr("class", "blinking-dot")
+        .attr("transform", function(d){ return "translate("+projection([d.longitude, d.latitude])+")"; })
+        .attr("r", 5)
+        .style("fill", function(d){ return colorScale(d.crime); })
+        .on("mouseover", function(d){ 
+        	var panel = d3.select("#info")
+        	.style("visibility", "visible");
+
+        	panel.select("#city")
+            .html("City: "+d.city);
+        	
+        	panel.select("#population")
+        	.html("Population: "+d.population);
+
+        	panel.select("#crime")
+        	.html(crimeType+": "+d.crime);
+        })
+        .on("mouseout", function(d){
+        	d3.select("#info").style("visibility", "hidden");
+        });
+    });
+    
+}
+</script>
+</body>
+</html>
