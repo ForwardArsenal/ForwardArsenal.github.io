@@ -105,7 +105,7 @@
 		      .data(state.values())
 		    .enter().append("option")
 		      .attr("value", function(d) { return d.AgencyName; })
-		      .text(function(d) { return d.AgencyName; });
+		      .text(function(d) { return d.AgencyName + ', ' + d.StateCode; });
 
 		  dispatch.on("statechange.menu", function(state) {
 		    select.property("value", state.AgencyName);
