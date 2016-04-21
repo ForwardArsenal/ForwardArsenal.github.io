@@ -11,6 +11,7 @@
 		    div { margin: 20px; 
 		    	/*border: 1px solid black;*/
 		    }
+
 		    #pieSvg {
 		          background-color: #FFFFFF;
 		          margin-left:auto; margin-right:auto; display:block;}
@@ -27,19 +28,27 @@
 		    #title h1 {font-size: 3em;}
 		    #title h3 {font-size: 2em;}
 
-		    .left {
-		    	/*float: left;*/
-		    	width: 40%;
-		    	/*border: 1px solid black;*/
-		    }
-
-		    #right {
-		    	/*float: right;*/
+		    #left {
+		    	margin-top: 50px;
+		    	float: left;
 		    	width: 45%;
 		    	/*border: 1px solid black;*/
 		    }
 
+		    #right {
+		    	float: right;
+		    	width: 45%;
+		    	/*border: 1px solid black;*/
+		    }
+
+		    #mapSvg{clear:both;}
+		    #seasonalSvg{clear:both;}
 		    #footnotes {font-size: 0.7em;}
+
+		    @media (max-width: 1100px) {
+		    	#left {float: none;}
+		    	#right {float: none;}
+		    }
 
 		</style>
 	</head>
@@ -51,13 +60,10 @@
 			<h3>The most dangerous cities in the US for hate crimes, <br> as reported by the FBI, 2013</h3>
 		</div>
 
-		<div class="left">
+		<div id="left">
 			Although we often like to think of the US as a place of acceptance, hate crimes and bias incidents are still unfortunately prevalent.  In 2013, there were <span class="emphasize"> 6,921 hate crimes </span> reported to the FBI.  These crimes were perpetrated and recorded on the basis of race, ethnicity, religion, gender and gender identity, disability and sexual-orientation.
-		</div>
-
-
-		<div class="left">
-			These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics fromt the worst offending cities in the US.  The adjacent pie chart shows breakdown by motivation, the map illustrates the worst offending cities by type, with the graphic below showing seasonal variation in crime volume.
+			<br><br>
+			These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The adjacent pie chart shows breakdown by motivation, the map illustrates the worst offending cities by type, with the graphic below showing seasonal variation in crime volume.
 		</div>
 
 		<div id="right">
@@ -76,7 +82,8 @@
 
 	<script>
 
-		// thanks to Mike Bostock and bl.ocks.org for information on dispatching events and interacting via dropdown menu
+		// thanks to Mike Bostock and his code on bl.ocks.org for information on dispatching events and interacting via dropdown menu, as well as ZeroViscosity.com for their tutorial on pie chart legend building in d3.js
+
 		var dispatch = d3.dispatch("load", "statechange");
 
 		var groups = [
@@ -84,7 +91,7 @@
 		];
 
 		d3.csv("/info5100-p2/data/alphabetized_data.csv", function(error, states) {
-		  if (error) throw error;
+		  if (error) console.log(error);
 		  var state = d3.map();
 		  states.forEach(function(d) { state.set(d.AgencyName, d); });
 		  dispatch.load(state);
@@ -115,10 +122,12 @@
 		    	height = 400,
 		    	radius = Math.min(width, height) / 2;
 
+		   	// assign a color to each of the groups (groups here are the different bias motivations)
 			var color = d3.scale.ordinal()
 			    .domain(groups)
 			    .range(["#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"]);
 
+			// build the donut with enough space for legend to fit inside
 			var arc = d3.svg.arc()
 			    .outerRadius(radius - 10)
 			    .innerRadius(radius - 100);
@@ -126,6 +135,7 @@
 			var pie = d3.layout.pie()
 			    .sort(null);
 
+			// add the pie chart, center it in the svg element
 			var svg = d3.select("#right").append("svg")
 			  	.attr("id", "pieSvg")
 			    .attr("width", width)
@@ -139,27 +149,23 @@
 			    .style("fill", color)
 			    .each(function() { this._current = {startAngle: 0, endAngle: 0}; });
 
-	    	var legendRectSize = 18;                                
-    		var legendSpacing = 4;   
+			// begin building legend to go inside the donut
+	    	var legendSize = 18;                                
+    		var spacing = 4;   
 
+    		// build the legend such that it is centered within donut
 		    var legend = svg.selectAll('.legend')                 
 		        .data(color.domain())                                   
 		        .enter()                                             
 		        .append('g')                                         
 		        .attr('class', 'legend')                               
 		        .attr('transform', function(d, i) {                    
-		            var height = legendRectSize + legendSpacing;         
-		            var offset =  height * color.domain().length / 2;     
-		            var horz = -2 * legendRectSize - 20;                      
-		            var vert = i * height - offset;                     
-		            return 'translate(' + horz + ',' + vert + ')';       
+		            var legendHeight = legendSize + spacing;         
+		            var offset =  legendHeight * color.domain().length / 2;     
+		            var horizontal = -2 * legendSize - 20;                      
+		            var vertical = i * legendHeight - offset;                     
+		            return 'translate(' + horizontal + ',' + vertical + ')';       
 	        	});                                                  
-
-	        legend.append('rect')                                
-	        	.attr('width', legendRectSize)                    
-	        	.attr('height', legendRectSize)                       
-	        	.style('fill', color)                                   
-	        	.style('stroke', color); 
 
 	        // refreshes the pie chart and labels with new information
 			dispatch.on("statechange.pie", function(d) {
@@ -171,16 +177,16 @@
 
 			        //re draw the legend with new information
 			        legend.append('rect')                                
-			        	.attr('width', legendRectSize)                    
-			        	.attr('height', legendRectSize)                       
+			        	.attr('width', legendSize)                    
+			        	.attr('height', legendSize)                       
 			        	.style('fill', color)                                   
 			        	.style('stroke', color); 
 
 			        legend.append('text')                                     
-			        	.attr('x', legendRectSize + legendSpacing)              
-			        	.attr('y', legendRectSize - legendSpacing)              
+			        	.attr('x', legendSize + spacing)              
+			        	.attr('y', legendSize - spacing)              
 			        	.text(function(e) { return e + ", " + d[e]; });   
-			    	return d[g]; 
+			    	return d[g];
 			    })(groups)).transition()
 			        .attrTween("d", function(d) {
 			        	var interpolate = d3.interpolate(this._current, d);
