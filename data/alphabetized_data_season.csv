@@ -1,0 +1,85 @@
+State,AgencyType,AgencyName,1stQuarter,2ndQuarter,3rdQuarter,4thQuarter,StateCode
+USA,USA,USA,1532,2216,2358,1833,USA
+Georgia,Cities,Atlanta,8,11,2,0,GA
+Washington,Cities,Auburn,1,1,4,4,WA
+Michigan,Cities,Bangor,0,0,0,1,MI
+North_Dakota,Cities,Bismarck,3,0,2,1,ND
+Massachusetts,Cities,Boston,39,56,40,30,MA
+New_York,Cities,Buffalo,6,3,4,4,NY
+Ohio,Metropolitan Counties,Butler,3,2,1,2,OH
+North_Carolina,Cities,Charlotte-Mecklenburg,10,4,2,5,NC
+Illinois,Cities,Chicago,11,10,15,9,IL
+Ohio,Cities,Cincinnati,4,0,2,10,OH
+Tennessee,Cities,Clarksville,1,2,0,8,TN
+Georgia,Metropolitan Counties,Cobb County Police Department,1,12,8,6,GA
+Ohio,Cities,Columbus,8,22,60,46,OH
+Tennessee,Cities,Covington,3,1,5,8,TN
+New_York,Cities,Croton-on-Hudson Village,0,1,0,0,NY
+California,Cities,Cupertino,0,0,0,1,CA
+Texas,Cities,Dallas,2,4,9,3,TX
+Colorado,Cities,Denver,3,13,9,5,CO
+New_Jersey,Cities,East Brunswick Township,3,4,3,4,NJ
+California,Cities,El Cerrito,3,1,2,1,CA
+Virginia,Metropolitan Counties,Fairfax County Police Department,3,1,5,4,VA
+North_Dakota,Cities,Fargo,2,3,6,3,ND
+Washington,Cities,Fife,0,1,1,0,WA
+Kentucky,Cities,Florence,1,1,1,0,KY
+Texas,Cities,Fort Worth,5,1,6,4,TX
+California,Cities,Fresno,3,3,1,3,CA
+Montana,Cities,Helena,11,0,0,0,MT
+Texas,Cities,Houston,4,5,1,3,TX
+New_Jersey,Cities,Howell Township,2,7,5,4,NJ
+Ohio,Cities,Huber Heights,1,3,4,0,OH
+California,Cities,Huntington Beach,0,1,0,0,CA
+Indiana,Cities,Indianapolis,8,15,16,4,IN
+North_Carolina,Metropolitan Counties,Iredell,0,2,3,0,NC
+Tennessee,Cities,Jonesborough,0,0,2,3,TN
+Missouri,Cities,Kansas City,13,17,21,12,MO
+Missouri,Cities,Kansas City,13,17,21,12,MO
+New_Jersey,Cities,Lacey Township,1,5,1,1,NJ
+Nevada,Cities,Las Vegas Metropolitan Police Department,16,13,18,18,NV
+Kentucky,Cities,Lexington,5,10,10,2,KY
+California,Cities,Los Angeles,21,40,25,28,CA
+Massachusetts,Cities,Lynn,1,5,6,4,MA
+Wisconsin,Cities,Madison,3,5,2,2,WI
+Tennessee,Cities,Memphis,6,5,9,4,TN
+Michigan,Universities and Colleges,Michigan State University,1,0,2,2,MI
+Maryland,Metropolitan Counties,Montgomery County Police Department,3,5,2,3,MD
+New_York,Universities and Colleges,Morrisville,0,1,0,0,NY
+North_Dakota,Nonmetropolitan Counties,Mountrail,0,0,1,4,ND
+New_York,Metropolitan Counties,Nassau,9,16,9,9,NY
+New_York,Cities,New York,56,84,81,93,NY
+New_York,Other Agencies,New York City Metropolitan Transportation Authority,4,5,4,4,NY
+Massachusetts,Universities and Colleges,Northeastern University,0,0,0,3,MA
+West_Virginia,Cities,Oak Hill,0,6,8,0,WV
+Washington,Cities,Omak,2,1,0,0,WA
+Pennsylvania,Cities,Philadelphia,3,11,1,1,PA
+Arizona,Cities,Phoenix,25,21,35,,AZ
+Pennsylvania,Cities,Pittsburgh,1,3,8,3,PA
+New_York,Cities,Poughkeepsie,2,1,0,1,NY
+New_York,Metropolitan Counties,Putnam,0,0,1,0,NY
+California,Cities,Riverside,7,4,0,5,CA
+California,Cities,Sacramento,2,5,6,3,CA
+Texas,Cities,San Antonio,3,3,3,2,TX
+California,Metropolitan Counties,San Bernardino,1,0,3,2,CA
+California,Cities,San Diego,7,10,17,9,CA
+California,Cities,San Francisco,4,8,8,4,CA
+California,Cities,San Jose,7,1,2,5,CA
+New_York,Cities,Schodack Town,0,0,1,0,NY
+Washington,Cities,Seattle,19,23,29,18,WA
+Tennessee,Metropolitan Counties,Shelby,2,7,20,17,TN
+Connecticut,Cities,Southington,3,2,2,0,CT
+Washington,Metropolitan Counties,Spokane,0,2,1,3,WA
+Missouri,Cities,St. Louis,3,2,2,5,MO
+Minnesota,Cities,St. Paul,0,18,11,1,MN
+Connecticut,Cities,Stamford,2,2,1,3,CT
+New_York,Universities and Colleges,State University of New York: Binghamton,0,0,3,1,NY
+New_York,Metropolitan Counties,Suffolk County Police Department,11,33,22,21,NY
+Arizona,Cities,Tucson,8,8,6,4,AZ
+California,Cities,Union City,1,3,1,0,CA
+DC,Cities,Washington,19,21,20,10,DC
+California,Cities,Westminster,1,1,1,2,CA
+Kansas,Cities,Wichita,4,4,4,2,KS
+South_Carolina,Cities,Winnsboro,2,3,0,1,SC
+New_York,Cities,Yonkers,2,0,3,2,NY
+,,,5.390243902,7.573170732,7.926829268,6.197530864,
