@@ -136,6 +136,12 @@
         	if (document.getElementById("circle") != null) {
 	            document.getElementById("circle").remove();
         	}
+        	for (var i = 0; i < 50; i++) {
+        	document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+        	document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+            }
+
+            document.getElementById("precentage").innerHTML = 0 + " %";
 
         	var selectedValue = d3.event.target.value;
         	indexChosen = index.indexOf(selectedValue.split(",")[0]);
