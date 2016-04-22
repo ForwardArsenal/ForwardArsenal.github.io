@@ -90,7 +90,7 @@
 		  'Race','Religion','SexualOrientation','Ethnicity','Disability','Gender'
 		];
 
-		d3.csv("/info5100-p2/data/alphabetized_data.csv", function(error, states) {
+		d3.csv("../data/alphabetized_data.csv", function(error, states) {
 		  if (error) console.log(error);
 		  var state = d3.map();
 		  states.forEach(function(d) { state.set(d.AgencyName, d); });

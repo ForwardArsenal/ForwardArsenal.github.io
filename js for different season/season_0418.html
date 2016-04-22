@@ -91,7 +91,7 @@
         var indexChosen = 0;
         var lines = [];
 
-        d3.csv("/info5100-p2/data/alphabetized_data.csv", function(error, states) {
+        d3.csv("../data/alphabetized_data.csv", function(error, states) {
 		    if (error) throw error;
           
             city = d3.map();
