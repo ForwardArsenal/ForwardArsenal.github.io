@@ -86,10 +86,12 @@
 
 		var dispatch = d3.dispatch("load", "statechange");
 
+		// the different categories to appear on the piechart
 		var groups = [
 		  'Race','Religion','Sexual Orientation','Ethnicity','Disability','Gender'
 		];
 
+		// importing data from the csv file
 		d3.csv("data/hate-crime.csv", function(error, states) {
 		  if (error) console.log(error);
 		  var state = d3.map();
@@ -100,20 +102,21 @@
 
 		// builds the drop down menu
 		dispatch.on("load.menu", function(state) {
-		  var select = d3.select("#right")
+		  	var select = d3.select("#right")
 		    .append("div")
 		    .append("select")
-		      .on("change", function() { dispatch.statechange(state.get(this.value)); });
+		    .on("change", function() { dispatch.statechange(state.get(this.value)); });
 
-		  select.selectAll("option")
-		      .data(state.values())
-		    .enter().append("option")
-		      .attr("value", function(d) { return d["Agency Name"]; })
-		      .text(function(d) { return d["Agency Name"] + ', ' + d["State Code"]; });
+		    // adds the options
+			select.selectAll("option")
+			    .data(state.values())
+			    .enter().append("option")
+			    .attr("value", function(d) { return d["Agency Name"]; })
+			    .text(function(d) { return d["Agency Name"] + ', ' + d["State Code"]; });
 
-		  dispatch.on("statechange.menu", function(state) {
-		    select.property("value", state["Agency Name"]);
-		  });
+			dispatch.on("statechange.menu", function(state) {
+		    	select.property("value", state["Agency Name"]);
+		  	});
 		});
 
 		// builds the pie chart
@@ -131,7 +134,7 @@
 			var arc = d3.svg.arc()
 			    .outerRadius(radius - 10)
 			    .innerRadius(radius - 100);
-
+			
 			var pie = d3.layout.pie()
 			    .sort(null);
 
