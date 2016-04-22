@@ -1,0 +1,221 @@
+<html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<style>
+	body { font-family: "Open Sans"; }
+    div { margin: 30px; }
+    svg { border: solid #DCDCDC 1px;
+          background-color: #FFFFFF;
+          margin-left:auto; margin-right:auto; display:block;}
+    path {  stroke: black; stroke-width: 2; }
+    circle{ fill: none; stroke: black; stroke-width: 2;}
+    line { stroke: black;}
+    text { font-size: 10px; }
+    .button {
+    	position: relative;
+	    background-color: #FFFFFF;
+	    border: none;
+	    font-size: 15px;
+	    color: #000000;
+	    padding: 10px 10px;
+	    height: 40;
+	    width: 120px;
+	    border: solid #000000 1px;
+	    text-align: center;
+	    vertical-align: center;
+	    -webkit-transition-duration: 0.4s; /* Safari */
+	    transition-duration: 0.4s;
+	    text-decoration: none;
+	    overflow: hidden;
+	    cursor: pointer;
+	    border-radius: 8px;
+    }
+    .button:after {
+	    content: "";
+	    background: #66FFE6;
+	    display: block;
+	    position: absolute;
+	    padding-top: 300%;
+	    padding-left: 350%;
+	    margin-left: -20px!important;
+	    margin-top: -120%;
+	    opacity: 0;
+	    transition: all 0.8s
+	}
+	.button:active:after {
+	    padding: 0;
+	    margin: 0;
+	    opacity: 1;
+	    transition: 0s
+	}
+	.button:hover {
+    background-color: #E0FFFF; 
+    color: black;
+    }
+    .center {
+    	text-align: center;
+    	margin-left:auto; margin-right:auto; display:block;
+    }    
+</style>
+</head>
+<body>
+	<div id = "Season"></div>
+	<p class = "center">The precentage for this choice to all hate crime cases is </p>
+	<div id = "precentage" class = "center"></div>
+	<!-- <button class = "button" onclick = "total()" style="position:relative; left:320px;">Total</button> -->
+	<button class = "button" onclick = "spring()" style="position:relative; left:320px;">Spring</button>
+	<button class = "button" onclick = "summer()" style="position:relative; left:320px;">Summer</button>
+	<button class = "button" onclick = "fall()" style="position:relative; left:320px;">Fall</button>
+	<button class = "button" onclick = "winter()" style="position:relative; left:320px;">Winter</button>
+
+	<script type="text/javascript">
+	    var padding = 35;
+        var height = 250;
+        var width = 1000;
+        var svg = d3.select("#Season").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+        //display all the elements, set hidden to the "flying" person
+	    for (var j = 0; j < 5; j++) {
+            ty = j * 150;
+
+            if (j < 4) {
+            	for (var i = 0; i < 13; i++) {
+		        	var tx = i * 110;
+
+			        svg.append("path")
+			        .attr("id","person0_"+ (j*13 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 950) + "," + (ty + 50) + ")")
+			        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+			        .attr("fill","none");
+
+			        svg.append("path")
+			        .attr("id","person1_"+ (j*13 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 950) + ","  + (ty + 50) + ")")
+			        .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
+			        .attr("fill","none");
+
+			        svg.append("path")
+				        .attr("id","personChosen0_"+ (j*13 +i))
+				        .attr("transform","scale(0.3),translate(" + (tx + 950) + "," + (ty + 50) + ")")
+				        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+				        .attr("fill","none")
+				        .attr("display","hidden");
+
+				    document.getElementById("personChosen0_"+ (j*13 +i)).style.visibility = "hidden";
+
+				    svg.append("path")
+				        .attr("id","personChosen1_"+ (j*13 +i))
+				        .attr("transform","scale(0.3),translate(" + (tx + 950) + ","  + (ty + 50) + ")")
+				        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+				        .attr("fill","none")
+				        .attr("display","hidden");
+
+				    document.getElementById("personChosen1_"+ (j*13 +i)).style.visibility = "hidden";
+				    document.getElementById("precentage").innerHTML = "0 %";
+		        }
+            	
+	        } else {
+	        	for (var i = 0; i < 10; i++) {
+		        	var tx = i * 110;
+
+			        svg.append("path")
+			        .attr("id","person0_"+ (j*13 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 950) + "," + (ty + 50) + ")")
+			        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+			        .attr("fill","none");
+
+			        svg.append("path")
+			        .attr("id","person1_"+ (j*13 +i))
+			        .attr("transform","scale(0.3),translate(" + (tx + 950) + ","  + (ty + 50) + ")")
+			        .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
+			        .attr("fill","none");
+
+			        svg.append("path")
+				        .attr("id","personChosen0_"+ (j*13 +i))
+				        .attr("transform","scale(0.3),translate(" + (tx + 950) + "," + (ty + 50) + ")")
+				        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+				        .attr("fill","none")
+				        .attr("display","hidden");
+
+				    document.getElementById("personChosen0_"+ (j*13 +i)).style.visibility = "hidden";
+
+				    svg.append("path")
+				        .attr("id","personChosen1_"+ (j*13 +i))
+				        .attr("transform","scale(0.3),translate(" + (tx + 950) + ","  + (ty + 50) + ")")
+				        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+				        .attr("fill","none")
+				        .attr("display","hidden");
+
+				    document.getElementById("personChosen1_"+ (j*13 +i)).style.visibility = "hidden";
+				    document.getElementById("precentage").innerHTML = "0 %";
+		        }    
+		    }
+	    } 
+
+        function spring() {
+
+	       	for (var i = 0; i < 41; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#00FA9A";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#00FA9A";
+	       	}
+	       	for (var i = 41; i < 62; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+	       	}
+	       	document.getElementById("precentage").innerHTML = "19.7 %";
+	       	
+        }
+
+        function summer() {
+
+	       	for (var i = 0; i < 60; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#DE3163";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#DE3163";
+	       	}
+	       	for (var i = 60; i < 62; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+	       	} 
+	       	document.getElementById("precentage").innerHTML = "28.7 %";
+
+        }
+
+        function fall() {
+	       	
+	       	for (var i = 0; i < 62; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen0_"+ i).style.fill = "gold";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen1_"+ i).style.fill = "gold";
+	       	}
+	       	document.getElementById("precentage").innerHTML = "29.2 %";  
+
+        }
+
+        function winter() { 
+
+	       	for (var i = 0; i < 47; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen0_"+ i).style.fill = "#87CEFA";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+			    document.getElementById("personChosen1_"+ i).style.fill = "#87CEFA";
+	       	}
+	       	for (var i = 47; i < 62; i++) {
+	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+	       	}
+	       	document.getElementById("precentage").innerHTML = "22.4 %";
+
+        }
+      
+	</script>
+
+
+</body>
