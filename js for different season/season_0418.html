@@ -65,20 +65,19 @@
 </head>
 <body>
 	<div id = "menu"></div>
+    <button class = "button" onclick = "spring(indexChosen)" style="position:relative; left:320px;">Spring</button>
+    <button class = "button" onclick = "summer(indexChosen)" style="position:relative; left:320px;">Summer</button>
+    <button class = "button" onclick = "fall(indexChosen)" style="position:relative; left:320px;">Fall</button>
+    <button class = "button" onclick = "winter(indexChosen)" style="position:relative; left:320px;">Winter</button>
+    <p class = "center">The precentage for this choice to all hate crime cases is </p>
+    <div id = "precentage" class = "center"></div>
 	<div id = "Season"></div>
 
-	<p class = "center">The precentage for this choice to all hate crime cases is </p>
-	<div id = "precentage" class = "center"></div>
-	<!-- <button class = "button" onclick = "total()" style="position:relative; left:320px;">Total</button> -->
-	<button class = "button" onclick = "spring(indexChosen)" style="position:relative; left:320px;">Spring</button>
-	<button class = "button" onclick = "summer(indexChosen)" style="position:relative; left:320px;">Summer</button>
-	<button class = "button" onclick = "fall(indexChosen)" style="position:relative; left:320px;">Fall</button>
-	<button class = "button" onclick = "winter(indexChosen)" style="position:relative; left:320px;">Winter</button>
-
+	
     
 	<script type="text/javascript">
 	    var padding = 20;
-        var height = 250;
+        var height = 350;
         var width = 1000;
         var svg = d3.select("#Season").append("svg")
         .attr("width", width)
@@ -91,15 +90,19 @@
         var indexChosen = 0;
         var lines = [];
 
+<<<<<<< HEAD
         d3.csv("../data/alphabetized_data.csv", function(error, states) {
+=======
+        d3.csv("/info5100-p2/data/hate-crime.csv", function(error, states) {
+>>>>>>> 231c43b372089e859c2d568a4f73fc98903e1210
 		    if (error) throw error;
           
             city = d3.map();
              //console.log(states.length);
-            states = states.filter(function(d) { return ! isNaN(d["4thQuarter"]) &&  ! isNaN(d["3rdQuarter"]) &&
-            	! isNaN(d["2ndQuarter"]) && ! isNaN(d["1stQuarter"]) });  
+            states = states.filter(function(d) { return ! isNaN(d["4th quarter"]) &&  ! isNaN(d["3rd quarter"]) &&
+            	! isNaN(d["2nd quarter"]) && ! isNaN(d["1st quarter"]) });  
              //console.log(states.length);        
-            states.forEach( function(d) { city.set(d.AgencyName, d); });
+            states.forEach( function(d) { city.set(d["Agency Name"], d); });
           
 	        //append other options to dropmenu
 	        var dropDown = d3.select("#menu").append("select")
@@ -108,11 +111,11 @@
 	        var options = dropDown.selectAll("option")
 	              .data(city.values())
 	              .enter().append("option")
-	              .attr("value", function(d) { return d.name; })
-	              .text(function(d) { return d.AgencyName + "," + d.StateCode; });
+	              .attr("value", function(d) { return d["Agency Name"]; })
+	              .text(function(d) { return d["Agency Name"] + "," + d["State Code"]; });
  
             //edit dataset move USA to the first place
-	        document.getElementById("dropdown").options[0].selected = true;
+	        //document.getElementById("dropdown").options[0].selected = true;
         
         dropDown.on("change", menuChanged);
 
@@ -120,11 +123,11 @@
 
         //construct array to represent in people
           city.values().forEach(function(d) {
-          	var temp = [d["1stQuarter"], d["2ndQuarter"], d["3rdQuarter"], d["4thQuarter"]];
+          	var temp = [d["1st quarter"], d["2nd quarter"], d["3rd quarter"], d["4th quarter"]];
           	temp.sort(function(a,b) {return a - b});
           	var maxValue = temp[3];
-          	var totalValue = Number(d["1stQuarter"]) + Number(d["2ndQuarter"]) + Number(d["3rdQuarter"]) + Number(d["4thQuarter"]);
-          	var temp2 = {spring: d["1stQuarter"], summer: d["2ndQuarter"], fall: d["3rdQuarter"], winter:d["4thQuarter"], max: maxValue, total: totalValue};
+          	var totalValue = Number(d["1st quarter"]) + Number(d["2nd quarter"]) + Number(d["3rd quarter"]) + Number(d["4th quarter"]);
+          	var temp2 = {spring: d["1st quarter"], summer: d["2nd quarter"], fall: d["3rd quarter"], winter:d["4th quarter"], max: maxValue, total: totalValue};
           	data.push(temp2);
           });
         //console.log(data);
@@ -145,15 +148,24 @@
 
         	var selectedValue = d3.event.target.value;
         	indexChosen = index.indexOf(selectedValue.split(",")[0]);
-        	console.log("value for this change is  " + indexChosen);
+        	//console.log("value for this change is  " + indexChosen);
 
         	var highlightLine = d3.svg.line()
                      .x(function(d) {return xScale(d.season);})
-                     .y(function(d) {return yScale(d[indexChosen]);});
+                     .y(function(d) {return yScale(d[indexChosen]);});        
 
-                     svg.append("path").attr("d", highlightLine(lines)).attr("id","highlight")
-                     .style("stroke", "orange").style("fill","none").style("stroke-width","3px");
-        }
+            var path = svg.append("path").attr("d", highlightLine(lines)).attr("id","highlight")
+            .style("stroke", "orange").style("fill","none").style("stroke-width","3px");
+
+            var totalLength = path.node().getTotalLength();
+            
+            path.attr("stroke-dasharray", totalLength + " " + totalLength)
+            .attr("stroke-dashoffset", totalLength)
+            .transition()
+            .duration(1500)
+            .ease("linear")
+            .attr("stroke-dashoffset", 0);
+            };
 
         //construct data for trend chart
         var springData = {season: "spring"};
@@ -173,9 +185,20 @@
     	lines.push(fallData);
     	lines.push(winterData);
 
+        //create average line
+        var avg = [{season:"spring", data: 5.390}, {season: "summer", data:7.573}, {season:"fall", data: 7.926}, {season: "winter", data: 6.197} ];
+        var avgLine = d3.svg.line()
+                     .x(function(d) {return xScale(d.season);})
+                     .y(function(d) {return yScale(d.data);})
+
+        svg.append("path").attr("d", avgLine(avg)).attr("id","averageLine")
+                     .style("stroke", "black").style("fill","none").style("stroke-width","2.5px")
+                     .style("stroke-dasharray", ("3, 3"));
+                     
+
     	//create all the lines
 
-        for (var i = 1; i < data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
         var line = d3.svg.line()
                      .x(function(d) {return xScale(d.season);})
                      .y(function(d) {return yScale(d[i]);})
@@ -218,19 +241,19 @@
 
 			        svg.append("path")
 			        .attr("id","person0_"+ (j*10 +i))
-			        .attr("transform","scale(0.3),translate(" + (tx + 100) + "," + (ty + 50) + ")")
+			        .attr("transform","scale(0.25),translate(" + (tx + 250) + "," + (ty + 300) + ")")
 			        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
 			        .attr("fill","none");
 
 			        svg.append("path")
 			        .attr("id","person1_"+ (j*10 +i))
-			        .attr("transform","scale(0.3),translate(" + (tx + 100) + ","  + (ty + 50) + ")")
+			        .attr("transform","scale(0.25),translate(" + (tx + 250) + ","  + (ty + 300) + ")")
 			        .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
 			        .attr("fill","none");
 
 			        svg.append("path")
 				        .attr("id","personChosen0_"+ (j*10 +i))
-				        .attr("transform","scale(0.3),translate(" + (tx + 100) + "," + (ty + 50) + ")")
+				        .attr("transform","scale(0.25),translate(" + (tx + 250) + "," + (ty + 300) + ")")
 				        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
 				        .attr("fill","none")
 				        .attr("display","hidden");
@@ -239,7 +262,7 @@
 
 				    svg.append("path")
 				        .attr("id","personChosen1_"+ (j*10 +i))
-				        .attr("transform","scale(0.3),translate(" + (tx + 100) + ","  + (ty + 50) + ")")
+				        .attr("transform","scale(0.25),translate(" + (tx + 250) + ","  + (ty + 300) + ")")
 				        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
 				        .attr("fill","none")
 				        .attr("display","hidden");
@@ -262,7 +285,7 @@
         	.attr("cx", xScale("spring"))
         	.attr("cy", yScale(data[n].spring))
         	.attr("id", "circle")
-        	.attr("fill", "skyblue");
+        	.style("color", "skyblue");
 
 	       	for (var i = 0; i < number; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -372,7 +395,7 @@
 
         //create x and y axis
         var xScale = d3.scale.ordinal().domain(['Spring','Summer','Fall','Winter']).range([500, 660, 820, 980]);
-        var yScale = d3.scale.linear().domain([0,100]).range([height - padding, padding]);
+        var yScale = d3.scale.pow().exponent(.45).domain([0,100]).range([height - padding, padding]);
 
         var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
                     .ticks(4);
