@@ -87,13 +87,13 @@
 		var dispatch = d3.dispatch("load", "statechange");
 
 		var groups = [
-		  'Race','Religion','SexualOrientation','Ethnicity','Disability','Gender'
+		  'Race','Religion','Sexual Orientation','Ethnicity','Disability','Gender'
 		];
 
-		d3.csv("/info5100-p2/data/alphabetized_data.csv", function(error, states) {
+		d3.csv("data/hate-crime.csv", function(error, states) {
 		  if (error) console.log(error);
 		  var state = d3.map();
-		  states.forEach(function(d) { state.set(d.AgencyName, d); });
+		  states.forEach(function(d) { state.set(d["Agency Name"], d); });
 		  dispatch.load(state);
 		  dispatch.statechange(state.get("USA"));
 		});
@@ -108,11 +108,11 @@
 		  select.selectAll("option")
 		      .data(state.values())
 		    .enter().append("option")
-		      .attr("value", function(d) { return d.AgencyName; })
-		      .text(function(d) { return d.AgencyName + ', ' + d.StateCode; });
+		      .attr("value", function(d) { return d["Agency Name"]; })
+		      .text(function(d) { return d["Agency Name"] + ', ' + d["State Code"]; });
 
 		  dispatch.on("statechange.menu", function(state) {
-		    select.property("value", state.AgencyName);
+		    select.property("value", state["Agency Name"]);
 		  });
 		});
 
