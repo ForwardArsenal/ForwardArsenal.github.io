@@ -40,15 +40,15 @@
         pointer-events: none; 
     }
     svg { background-color: white }
-    .panel-info { height: 200px; width: 940px; margin-left: 160px; margin-right: 200px; margin-bottom: 0px; border: none; }
-    .panel-heading { height: 60px; width: 400px; margin-left: 270px; margin-top: 15px; }
+    .panel-info { height: 220px; width: 940px; margin-left: 160px; margin-right: 200px; margin-bottom: 0px; border: none; }
+    .panel-heading { height: 60px; width: 400px; margin-left: 270px; margin-top: 180px; margin-bottom: 0px; }
     .heading-text { font-family: "Comic Sans MS"; text-align: center; padding-top: 17px; font-size: 20px; }
     .info-heading { height: 60px; width: 180px; margin-left: 24px; margin-bottom: 0px; }
     .btn-text { font-family: "Comic Sans MS"; }
     .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; }
     .btn-primary { margin-left: 0px; padding-left: 10px; width: 140px; margin-top: 20px; }
-    .panel-success { position: absolute; height: 600px; width: 230px; outline: 5px solid green; box-shadow: 5px 5px;}
-    .state-boundary { fill: #DCDCDC; stroke: #ccc; }
+    .panel-success { position: absolute; height: 520px; width: 225px; outline: 5px solid green; box-shadow: 5px 5px;}
+    .state-boundary { fill: #ccc; stroke: #ffffff; }
     .state-name { fill: #000000; fill-opacity: .8; font-size: 8px; font-weight: 300; text-anchor: middle; }
     .location { fill: red; fill-opacity: .8; }
     .well { position: static; margin-top: 20px; margin-bottom: 0px; height: 40px; width: 180px; margin-left: 0px; padding-top: 7px; }
@@ -80,7 +80,6 @@
 </div>
 <div id="map"></div>
 <div id="info" class="panel panel-success" style="visibility: hidden">
-	<div class="panel-heading heading-text info-heading" style="font-size: 15px">Hate Crime Info</div>
     <div class="panel-body">
     	<div id="city" class="well well-text" style="text-align: center"></div>
     	<div id="population" class="well well-text" style="text-align: center"></div>
@@ -89,6 +88,7 @@
     </div>
 </div>
 <script>
+///<div class="panel-heading heading-text info-heading" style="font-size: 15px">Hate Crime Info</div>
 var width = 1220;
 var height = 600;
 var clickedID;
@@ -136,6 +136,7 @@ d3.json("../data/us.json", function(error, shapes){
 d3.csv("../data/hate-crime.csv", function(error, rows){
 	var toggleOn = false;
 	if(error){ console.log(error); }
+	rows = rows.filter(function(d){ return d["Agency Name"]!="USA"; });
 	var toggle = d3.select("#toggle").on("change", function(d){
 	    if(d3.select(this).node().value == "false"){
 		    d3.select(this).node().value = "true";
@@ -292,8 +293,8 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
     }
     var colorScale = d3.scale.linear()
     .domain(input)
-    .range([ "#F5D0A9", "#FAAC58", "#FF8000", "#DF7401", "#FE2E2E", "#DF0101" ]);
-
+    .range([ "#F7FE2E", "#fed976", "#feb24c", "#FE642E", "#FE2E2E", "#bd0026" ]);
+    //original "#F5D0A9", "#FAAC58", "#FF8000", "#DF7401", "#FE2E2E", "#DF0101"
     //add longitude and latitude to every city in the filtered array
     d3.csv("../data/us-cities.csv", function(error, cities){
         if(error){ console.log(error); }
@@ -311,7 +312,7 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
         .enter()
         .append("circle")
         .attr("transform", function(d){ return "translate("+projection([d.longitude, d.latitude])+")"; })
-        .attr("r", 5)
+        .attr("r", 7)
         .style("fill", function(d){
         	if(toggleOn == true){
         		return colorScale(d.crime*10000);
@@ -367,18 +368,19 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
 function displayDonutChart(ratios){
 
 	var crimes = ["Race", "Religion", "Ethnicity", "Disability", "Gender", "Sexual Orientation"];
-	var dheight = 160;
+	var dheight = 150;
 	var dwidth = 220;
-	var radius = Math.min(dheight, dwidth)/2;
+	var radius = 150/2;
 
 	var lheight = 100;
 	var lwidth = 220;
-    
-	var colorScale = d3.scale.ordinal().domain(crimes).range(["red", "green", "blue", "yellow", "purple", "grey"]);
+	//"#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"
+    //"red", "green", "blue", "yellow", "purple", "grey"
+	var colorScale = d3.scale.ordinal().domain(crimes).range(["#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"]);
     
     var arc = d3.svg.arc()
-        .outerRadius(radius-5)
-        .innerRadius(radius-45);
+        .outerRadius(radius)
+        .innerRadius(radius-40);
 
     var pie = d3.layout.pie()
         .sort(null)
@@ -427,10 +429,11 @@ function displayDonutChart(ratios){
 }
 
 function generateDonutChartLegend(svg){
-	var textInfo = [{ x: 20, y: 10, text: "Race" }, { x: 133, y: 10, text: "Religion" }, { x: 25, y: 45, text: "Ethnicity" }, 
-	{ x: 145, y: 45, text: "Disability" }, { x: 80, y: 70, text: "Gender" }, { x: 80, y: 85, text: "Sexual Orientation"}];
+	//"#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"
+	var textInfo = [{ x: 20, y: 8, text: "Race" }, { x: 140, y: 8, text: "Religion" }, { x: 25, y: 42, text: "Ethnicity" }, 
+	{ x: 145, y: 42, text: "Disability" }, { x: 20, y: 68, text: "Gender" }, { x: 135, y: 68, text: "Sexual Orientation"}];
 
-    var rectInfo = [{ x: 40, y: 0, color: "red" }, { x: 165, y: 0, color: "green" }, { x: 60, y: 35, color: "blue" }, { x: 175, y: 35, color: "yellow" }, { x: 110, y: 60, color: "purple" }, { x: 140, y: 75, color: "grey" }];
+    var rectInfo = [{ x: 40, y: 0, color: "#1395BA" }, { x: 165, y: 0, color: "#A2B86C" }, { x: 50, y: 35, color: "#EBC844" }, { x: 175, y: 35, color: "#F16C20" }, { x: 40, y: 60, color: "#C02E1D" }, { x: 180, y: 60, color: "#0D3C55" }];
 
 	svg.selectAll(".donutChartLegendText").data(textInfo)
 	.enter()
@@ -451,9 +454,9 @@ function generateDonutChartLegend(svg){
 
 function generateMapLegend(toggleOn){
 	d3.selectAll(".legendText").remove();
-
-    var rectInfo = [{ x: 700, y: 0, color: "#F5D0A9"}, { x: 760, y: 0, color: "#FAAC58" }, { x: 820, y: 0, color: "#FF8000" }, 
-    { x: 880, y: 0, color: "#DF7401" }, { x: 940, y: 0, color:"#FE2E2E" }, { x: 1000, y: 0, color: "#DF0101" }];
+    //"#F7FE2E", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026"
+    var rectInfo = [{ x: 700, y: 0, color: "#F7FE2E"}, { x: 760, y: 0, color: "#fed976" }, { x: 820, y: 0, color: "#feb24c" }, 
+    { x: 880, y: 0, color: "#FE642E" }, { x: 940, y: 0, color: "#FE2E2E" }, { x: 1000, y: 0, color: "#bd0026" }];
 
     var toggleOffTextInfo = [{ x: 725, y: 30, text: "0~25" }, { x: 785, y: 30, text: "25~50" }, { x: 845, y: 30, text: "50~75" }, 
     { x: 905, y: 30, text: "75~100" }, { x: 965, y: 30, text: "100~125" }, { x: 1025, y: 30, text: "125~152" }];
@@ -492,8 +495,7 @@ function generateMapLegend(toggleOn){
     .attr("y", 50)
     .style("text-anchor", "middle")
     .style("font-size", "9px")
-    .text("*When the toggle is turned on, the magnitude of the criminal stats is measured by ten thousandth.");
-    //'* Sex stands for "Sexual Orientation"'
+    .text("*Toggle scales by population, reporting crimes per 10,000 people.");
 }
 </script>
 </body>
