@@ -3,18 +3,21 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<!-- <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'> -->
+
+
 
 <style>
 	body { font-family: "Open Sans"; }
     div { margin: 30px; }
-    svg { border: solid #DCDCDC 1px;
+    svgSeason { border: solid #DCDCDC 1px;
           background-color: #FFFFFF;
           margin-left:auto; margin-right:auto; display:block;
       }
     .axis path { fill: none; stroke: black; stroke-width: 2;}
     .axis line { stroke: black; }
     path {  stroke: black; stroke-width: 2; }
-    circle{ fill: none; stroke: black; stroke-width: 2;}
     line { stroke: gray;}
     text { font-size: 10px; }
     .button {
@@ -71,18 +74,18 @@
     <button class = "button" onclick = "summer(indexChosen)" style="position:relative; left:320px;">Summer</button>
     <button class = "button" onclick = "fall(indexChosen)" style="position:relative; left:320px;">Fall</button>
     <button class = "button" onclick = "winter(indexChosen)" style="position:relative; left:320px;">Winter</button>
-    <p class = "center">The precentage for this choice to all hate crime cases is <span id = "precentage" color = red></span> </p>
+    <p class = "center">The precentage for this choice to all hate crime cases is <span id = "precentage" color = "#D05050"></span> </p>
     
 
 	<div id = "Season"></div>
     
 	<script type="text/javascript">
-	    var padding = 20;
-        var height = 350;
-        var width = 1000;
-        var svg = d3.select("#Season").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+	    var paddingSeason = 20;
+        var heightSeason = 350;
+        var widthSeason = 1000;
+        var svgSeason = d3.select("#Season").append("svg")
+        .attr("width", widthSeason)
+        .attr("height", heightSeason);
 
 
         //load and map data
@@ -149,10 +152,10 @@
                 
                 //highlight lines according to dropdown options from user
             	var highlightLine = d3.svg.line()
-                         .x(function(d) {return xScale(d.season);})
-                         .y(function(d) {return yScale(d[indexChosen]);});        
+                         .x(function(d) {return xScaleSeason(d.season);})
+                         .y(function(d) {return yScaleSeason(d[indexChosen]);});        
 
-                var path = svg.append("path").attr("d", highlightLine(lines)).attr("id","highlight")
+                var path = svgSeason.append("path").attr("d", highlightLine(lines)).attr("id","highlight")
                 .style("stroke", "orange").style("fill","none").style("stroke-width","3px");
                 
                 //add animation to highlight line
@@ -187,29 +190,30 @@
                 //create average line
                 var avg = [{season:"spring", data: 5.390}, {season: "summer", data:7.573}, {season:"fall", data: 7.926}, {season: "winter", data: 6.197} ];
                 var avgLine = d3.svg.line()
-                             .x(function(d) {return xScale(d.season);})
-                             .y(function(d) {return yScale(d.data);})
+                             .x(function(d) {return xScaleSeason(d.season);})
+                             .y(function(d) {return yScaleSeason(d.data);})
 
-                svg.append("path").attr("d", avgLine(avg)).attr("id","averageLine")
+                svgSeason.append("path").attr("d", avgLine(avg)).attr("id","averageLine")
                              .style("stroke", "black").style("fill","none").style("stroke-width","2.5px")
                              .style("stroke-dasharray", ("3, 3"));
                      
             	//create all the lines
                 for (var i = 1; i < data.length; i++) {
                     var line = d3.svg.line()
-                                 .x(function(d) {return xScale(d.season);})
-                                 .y(function(d) {return yScale(d[i]);})
+                                 .x(function(d) {return xScaleSeason(d.season);})
+                                 .y(function(d) {return yScaleSeason(d[i]);})
                                  
-                    svg.append("path").attr("d", line(lines)).attr("id",i)
+                    svgSeason.append("path").attr("d", line(lines)).attr("id",i)
                     .style("stroke", "#C1C1C1").style("fill","none").style("stroke-width","1px")
+                    .attr("opacity",0.5)
                     .on("mouseover", function() {
                      	if (document.getElementById("location") != null) {
                         document.getElementById("location").remove();
         	            }
 
                         d3.select(this).style("stroke", "black").style("stroke-width", "2px");
-                     	svg.append("text")
-                     	.attr("x", 0.5*(xScale("spring") + xScale("winter")))
+                     	svgSeason.append("text")
+                     	.attr("x", 0.5*(xScaleSeason("spring") + xScaleSeason("winter")))
                      	.attr("y", 30)
                      	.style("font-size", 20)
         		        .attr("text-anchor", "middle")
@@ -221,7 +225,8 @@
                         if (document.getElementById("location") != null) {
                             document.getElementById("location").remove();
                         }                     
-                        d3.select(this).style("stroke", "#C1C1C1").style("stroke-width", "1px");
+                        d3.select(this).style("stroke", "#C1C1C1").style("stroke-width", "1px")
+                        .attr("opacity",0.5);
                     });
                 }
         })
@@ -234,21 +239,21 @@
 	        	var tx = i * 110;
 
                 //normal people head
-		        svg.append("path")
+		        svgSeason.append("path")
 		        .attr("id","person0_"+ (j*10 +i))
 		        .attr("transform","scale(0.25),translate(" + (tx + 250) + "," + (ty + 300) + ")")
 		        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
 		        .attr("fill","none");
 
                 //normal people body
-		        svg.append("path")
+		        svgSeason.append("path")
 		        .attr("id","person1_"+ (j*10 +i))
 		        .attr("transform","scale(0.25),translate(" + (tx + 250) + ","  + (ty + 300) + ")")
 		        .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
 		        .attr("fill","none");
                 
                 //flying people head, set hidden default
-		        svg.append("path")
+		        svgSeason.append("path")
 		        .attr("id","personChosen0_"+ (j*10 +i))
 		        .attr("transform","scale(0.25),translate(" + (tx + 250) + "," + (ty + 300) + ")")
                 .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
@@ -256,7 +261,7 @@
 			    document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
 
                 //flying people body, set hidden default
-			    svg.append("path")
+			    svgSeason.append("path")
 			        .attr("id","personChosen1_"+ (j*10 +i))
 			        .attr("transform","scale(0.25),translate(" + (tx + 250) + ","  + (ty + 300) + ")")
 			        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
@@ -278,11 +283,11 @@
         	number = Math.round(data[n]["spring"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["spring"] / data[n]["total"] * 100);
         	
-        	svg.append("circle").attr("r",4)
-        	.attr("cx", xScale("spring"))
-        	.attr("cy", yScale(data[n].spring))
+        	svgSeason.append("circle").attr("r",4)
+        	.attr("cx", xScaleSeason("spring"))
+        	.attr("cy", yScaleSeason(data[n].spring))
         	.attr("id", "circle")
-        	.attr("fill", "skyblue");
+        	.attr("fill", "#00FA9A");
 
 	       	for (var i = 0; i < number; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -305,11 +310,11 @@
 	            document.getElementById("circle").remove();
         	}
 
-        	svg.append("circle").attr("r",4)
-        	.attr("cx", xScale("summer"))
-        	.attr("cy", yScale(data[n].summer))
+        	svgSeason.append("circle").attr("r",4)
+        	.attr("cx", xScaleSeason("summer"))
+        	.attr("cy", yScaleSeason(data[n].summer))
         	.attr("id", "circle")
-        	.attr("fill", "skyblue");
+        	.attr("fill", "#DE3163");
 
         	number = Math.round(data[n]["summer"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["summer"] / data[n]["total"] * 100);
@@ -336,11 +341,11 @@
 	            document.getElementById("circle").remove();
         	}
 
-        	svg.append("circle").attr("r",4)
-        	.attr("cx", xScale("fall"))
-        	.attr("cy", yScale(data[n].fall))
+        	svgSeason.append("circle").attr("r",4)
+        	.attr("cx", xScaleSeason("fall"))
+        	.attr("cy", yScaleSeason(data[n].fall))
         	.attr("id", "circle")
-        	.attr("fill", "skyblue");
+        	.attr("fill", "gold");
 
         	number = Math.round(data[n]["fall"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["fall"] / data[n]["total"] * 100);
@@ -367,11 +372,11 @@
 	            document.getElementById("circle").remove();
         	}
 
-        	svg.append("circle").attr("r",4)
-        	.attr("cx", xScale("winter"))
-        	.attr("cy", yScale(data[n].winter))
+        	svgSeason.append("circle").attr("r",4)
+        	.attr("cx", xScaleSeason("winter"))
+        	.attr("cy", yScaleSeason(data[n].winter))
         	.attr("id", "circle")
-        	.attr("fill", "skyblue");
+        	.attr("fill", "#87CEFA");
 
         	number = Math.round(data[n]["winter"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["winter"] / data[n]["total"] * 100);
@@ -392,18 +397,18 @@
         }
 
         //create x and y axis for line chart
-        var xScale = d3.scale.ordinal().domain(['Spring','Summer','Fall','Winter']).range([500, 660, 820, 980]);
-        var yScale = d3.scale.pow().exponent(.5).domain([0,100]).range([height - padding, padding]);
+        var xScaleSeason = d3.scale.ordinal().domain(['Spring','Summer','Fall','Winter']).range([500, 660, 820, 980]);
+        var yScaleSeason = d3.scale.pow().exponent(.5).domain([0,100]).range([heightSeason - paddingSeason, paddingSeason]);
 
-        var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+        var xAxisSeason = d3.svg.axis().scale(xScaleSeason).orient("bottom")
                     .ticks(4);
-        var yAxis = d3.svg.axis().scale(yScale).orient("left")
+        var yAxisSeason = d3.svg.axis().scale(yScaleSeason).orient("left")
                     .ticks(10);
         
-        svg.append("g").attr("transform", "translate(0," + (height - padding) + ")").attr("class", "axis")
-        .call(xAxis); 
-        svg.append("g").attr("transform", "translate(" + 500 + ",0)").attr("class", "axis")
-        .call(yAxis);
+        svgSeason.append("g").attr("transform", "translate(0," + (heightSeason - paddingSeason) + ")").attr("class", "axis")
+        .call(xAxisSeason); 
+        svgSeason.append("g").attr("transform", "translate(" + 500 + ",0)").attr("class", "axis")
+        .call(yAxisSeason);
       
 	</script>
 
