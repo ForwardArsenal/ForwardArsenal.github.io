@@ -91,15 +91,13 @@
 		  'Race','Religion','Sexual Orientation','Ethnicity','Disability','Gender'
 		];
 
-<<<<<<< HEAD
+
 		// importing data from the csv file
-=======
-<<<<<<< HEAD
+
 		d3.csv("../data/alphabetized_data.csv", function(error, states) {
-=======
->>>>>>> be09fa7db2fa2a75e3f70900b7f3274f3c48659e
+
 		d3.csv("data/hate-crime.csv", function(error, states) {
->>>>>>> 231c43b372089e859c2d568a4f73fc98903e1210
+
 		  if (error) console.log(error);
 		  var state = d3.map();
 		  states.forEach(function(d) { state.set(d["Agency Name"], d); });

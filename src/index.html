@@ -6,24 +6,61 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="font-awesome.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
-    .panel { padding-bottom: 65px; width: 1100px; margin-left: 100px; }
+   /* The overview's style */
+    body { font-family: "Open Sans"; color: #333;}
+    div { margin: 20px; /*border: 1px solid black;*/}
+    #pieSvg {
+        background-color: #FFFFFF;
+        margin-left:auto; margin-right:auto; display:block;
+    }
+    #pieSvg path {  stroke: white; stroke-width: 2; }
+    #pieSvg circle{ fill: none; stroke: black; stroke-width: 2;}
+    #pieSvg line { stroke: black;}
+    #pieSvg text { font-size: 10px; }
+    .emphasize {
+        color: red;
+        font-weight: bold;
+    }
+    #title h1 {font-size: 3em;}
+    #title h3 {font-size: 2em;}
+    #left {
+        margin-top: 50px;
+        float: left;
+        width: 45%;
+        /*border: 1px solid black;*/
+    }
+    #right {
+        float: right;
+        width: 45%;
+        /*border: 1px solid black;*/
+    }
+    #mapSvg{clear:both;}
+    #seasonalSvg{clear:both;}
+    #footnotes {font-size: 0.7em;}
+    @media (max-width: 1100px) {
+        #left {float: none;}
+        #right {float: none;}
+    }
+</style>
+<style>
+    /*  The map's style */
+    .panel { padding-bottom: 65px; width: 1100px; height: 230px; margin-left: 100px; margin-top: 140px; margin-bottom: 0px; border: none; }
     .switch { 
     	height: 28px;
-        margin-top: 20px;
+        margin-top: 0px;
         float: left;
     }
     .toggle-text {
-    	height: 0px;
     	font-family: "Comic Sans MS";
     	font-size: 15px;
-    	margin-top: 0px;
-    	margin-left: 42px;
+        margin-bottom: 5px;
+    	margin-left: 70px;
     }
     input.cmn-toggle-round-flat + label {
     	width: 120px;
         height: 40px;
-
     }
     .arc text { font-family: "Comic Sans MS"; font-size: 5px; }
     .arc path { stroke: #fff; }
@@ -39,37 +76,142 @@
         pointer-events: none; 
     }
     svg { background-color: white }
-    .panel-info { height: 100px; width: 940px; margin-left: 160px; margin-right: 200px; margin-bottom: 0px; border: 1px solid black; }
     .panel-heading { height: 60px; width: 400px; margin-left: 270px; margin-top: 80px; margin-bottom: 0px; }
     .heading-text { font-family: "Comic Sans MS"; text-align: center; padding-top: 17px; font-size: 25px; }
     .info-heading { height: 60px; width: 180px; margin-left: 24px; margin-bottom: 0px; }
-    .btn-text { font-family: "Comic Sans MS"; }
-    .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; }
+    .btn-text { font-family: "Comic Sans MS"; white-space: nowrap; }
+    .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; border: none; }
     .btn-primary { margin-left: 18px; padding-left: 10px; width: 140px; margin-top: 20px; }
-    .panel-success { position: absolute; height: 520px; width: 225px; outline: 5px solid green; box-shadow: 5px 5px;}
+    .panel-success { position: absolute; height: 430px; width: 225px; outline: 5px solid green; box-shadow: 5px 5px;}
     .state-boundary { fill: #ccc; stroke: #ffffff; }
     .state-name { fill: #000000; fill-opacity: .8; font-size: 8px; font-weight: 300; text-anchor: middle; }
     .location { fill: red; fill-opacity: .8; }
-    .well { position: static; margin-top: 20px; margin-bottom: 0px; height: 40px; width: 180px; margin-left: 0px; padding-top: 7px; }
-    .well-text { font-family: "Comic Sans MS"; padding-left: 23px; color: #F7356A; font-size: 6px; }
+    .well { position: static; margin-top: 10px; margin-bottom: 10px; height: 140px; width: 180px; margin-left: 0px; padding-top: 0px; margin-right: 0px; padding-left: 10px; }
+    .well-text { font-family: "Comic Sans MS"; padding-top: 0px; color: #F7356A; font-size: 6px; line-height: 0%; white-space: nowrap; text-align: center; margin-left: 20px; }
     .donutChart { margin-top: 0px; padding-top: 0px; margin-bottom: 0px; }
     .legend { margin-left: 10px; }
     .legendText { text-anchor: middle; font-size: 10px; }
-    .donutChartLegendText { font-size: 10px; text-anchor: middle; }
+    .donutChartLegendText { font-size: 8px; text-anchor: middle; }
     .donutChartLegendRect { width: 40px; height: 10px; }
     .mapLegendRect { width: 50px; height: 10px; }
+    .mapButton {
+        position: relative;
+        background-color: #FFFFFF;
+        font-size: 15px;
+        color: #000000;
+        padding: 10px 10px;
+        height: 40px;
+        width: 150px;
+        border: solid #000000 1px;
+        text-align: center;
+        vertical-align: center;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        text-decoration: none;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-left: 18px;
+        margin-top: 10px; 
+    }
+    .mapButton:hover {
+        background-color: #E0FFFF; 
+        color: black;
+    }
+</style>
+<style>
+    /* The seasonal data's style */
+    body { font-family: "Open Sans"; }
+    div { margin: 30px; }
+    .svgSeason { border: 1px solid black;
+          background-color: #FFFFFF;
+          margin-left:auto; margin-right:auto; display:block;
+    }
+    .axis path { fill: none; stroke: black; stroke-width: 2;}
+    .axis line { stroke: black; }
+    path {  stroke: black; stroke-width: 2; }
+    line { stroke: gray;}
+    text { font-size: 10px; }
+    .button {
+        font-family: "Comic Sans MS";
+        position: relative;
+        background-color: #FFFFFF;
+        border: none;
+        font-size: 15px;
+        color: #000000;
+        padding: 10px 10px;
+        height: 40;
+        width: 120px;
+        border: solid #000000 1px;
+        text-align: center;
+        vertical-align: center;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        text-decoration: none;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-left: 25px;
+    }
+    .button:after {
+        content: "";
+        background: #66FFE6;
+        display: block;
+        position: absolute;
+        padding-top: 300%;
+        padding-left: 350%;
+        margin-left: -20px!important;
+        margin-top: -120%;
+        opacity: 0;
+        transition: all 0.8s
+    }
+    .button:active:after {
+        padding: 0;
+        margin: 0;
+        opacity: 1;
+        transition: 0s
+    }
+    .button:hover {
+    background-color: #E0FFFF; 
+    color: black;
+    }
+    .center {
+        margin-top: 15px;
+        text-align: center;
+        margin-left:auto; margin-right:auto; display:block;
+    } 
+    .menu {
+        margin-top: 130px;
+    }
 </style>
 </head>
 <body>
+<div id="title">
+    <h1>Hate Crimes Across the United States</h1>
+    <h3>The most dangerous cities in the US for hate crimes, <br> as reported by the FBI, 2013</h3>
+</div>
+<div id="left">
+    Although we often like to think of the US as a place of acceptance, hate crimes and bias incidents are still unfortunately prevalent.  In 2013, there were <span class="emphasize"> 6,921 hate crimes </span> reported to the FBI.  These crimes were perpetrated and recorded on the basis of race, ethnicity, religion, gender and gender identity, disability and sexual-orientation.
+    <br><br>
+    These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The adjacent pie chart shows breakdown by motivation, the map illustrates the worst offending cities by type, with the graphic below showing seasonal variation in crime volume.
+</div>
+<div id="right"></div>
+<div id="mapSvg">Map goes here</div>
+<div id="seasonalSvg">Seasonal visualization goes here</div>
+<div id="footnotes">
+    <p>
+        *data from the <a href="https://www.fbi.gov/about-us/cjis/ucr/hate-crime/2013/topic-pages/incidents-and-offenses/incidentsandoffenses_final">2013 FBI hate crimes statistics report. Gender represented both gender and gender-identity motivated hate crimes. Cities not available in dropdown menus did not have significant numbers of reported hate crimes.</a>
+    </p>
+</div>
 <div id="panel" class="panel">
 	<div class="panel-heading heading-text">Select a crime type to display!</div>
     <div class="panel-body">
-    	<button id="race" type="button" class="btn btn-primary btn-text">Race</button>
-    	<button id="religion" type="button" class="btn btn-primary btn-text">Religion</button>
-    	<button id="sex" type="button" class="btn btn-primary btn-text">Sexual Orientation</button>
-    	<button id="ethnicity" type="button" class="btn btn-primary btn-text">Ethnicity</button>
-    	<button id="disability" type="button" class="btn btn-primary btn-text">Disability</button>
-    	<button id="gender" type="button" class="btn btn-primary btn-text">Gender</button> 
+    	<button id="race" type="button" class="mapButton btn-text">Race</button>
+    	<button id="religion" type="button" class="mapButton btn-text">Religion</button>
+    	<button id="sex" type="button" class="mapButton btn-text">Sexual Orientation</button>
+    	<button id="ethnicity" type="button" class="mapButton btn-text">Ethnicity</button>
+    	<button id="disability" type="button" class="mapButton btn-text">Disability</button>
+    	<button id="gender" type="button" class="mapButton btn-text">Gender</button> 
     </div>
     <div class="toggle-text">Ratio</div>
     <div class="switch">
@@ -80,26 +222,153 @@
 <div id="map"></div>
 <div id="info" class="panel panel-success" style="visibility: hidden">
     <div class="panel-body">
-    	<div id="city" class="well well-text" style="text-align: center"></div>
-    	<div id="population" class="well well-text" style="text-align: center"></div>
-    	<div id="crime" class="well well-text" style="text-align: center"></div>
-    	<div id="rank" class="well well-text" style="text-align: center"></div>
+        <div class="well">
+            <div id="city" class="well-text"></div>
+            <div id="population" class="well-text"></div>
+            <div id="crime" class="well-text"></div>
+            <div id="rank" class="well-text"></div>
+        </div>
     </div>
 </div>
+<div id = "menu" class="menu"></div>
+    <button class = "button" onclick = "spring(indexChosen)" style="position:relative; left:320px;">Spring</button>
+    <button class = "button" onclick = "summer(indexChosen)" style="position:relative; left:320px;">Summer</button>
+    <button class = "button" onclick = "fall(indexChosen)" style="position:relative; left:320px;">Fall</button>
+    <button class = "button" onclick = "winter(indexChosen)" style="position:relative; left:320px;">Winter</button>
+    <p class = "center">The precentage for this choice to all hate crime cases in this region is &nbsp<span id = "precentage" style = "color:red"></span> &nbsp% </p>
+<div id = "Season"></div>
 <script>
-///<div class="panel-heading heading-text info-heading" style="font-size: 15px">Hate Crime Info</div>
+    // thanks to Mike Bostock and his code on bl.ocks.org for information on dispatching events and interacting via dropdown menu, as well as ZeroViscosity.com for their tutorial on pie chart legend building in d3.js
+    var dispatch = d3.dispatch("load", "statechange");
+    // the different categories to appear on the piechart
+    var groups = [
+        'Race','Religion','Sexual Orientation','Ethnicity','Disability','Gender'
+    ];
+    // importing data from the csv file
+    d3.csv("../data/alphabetized_data.csv", function(error, states) {
+        d3.csv("../data/hate-crime.csv", function(error, states) {
+            if (error) console.log(error);
+            var state = d3.map();
+            states.forEach(function(d) { state.set(d["Agency Name"], d); });
+            dispatch.load(state);
+            dispatch.statechange(state.get("USA"));
+        });
+        // builds the drop down menu
+        dispatch.on("load.menu", function(state) {
+            var select = d3.select("#right")
+            .append("div")
+            .append("select")
+            .on("change", function() { dispatch.statechange(state.get(this.value)); });
+            // adds the options
+            select.selectAll("option")
+            .data(state.values())
+            .enter().append("option")
+            .attr("value", function(d) { return d["Agency Name"]; })
+            .text(function(d) { return d["Agency Name"] + ', ' + d["State Code"]; });
+
+            dispatch.on("statechange.menu", function(state) {
+                select.property("value", state["Agency Name"]);
+            });
+        });
+
+        // builds the pie chart
+        dispatch.on("load.pie", function(state) {
+            var width = 600,
+                height = 400,
+                radius = Math.min(width, height) / 2;
+
+            // assign a color to each of the groups (groups here are the different bias motivations)
+            var color = d3.scale.ordinal()
+                .domain(groups)
+                .range(["#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"]);
+
+            // build the donut with enough space for legend to fit inside
+            var arc = d3.svg.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(radius - 100);
+            
+            var pie = d3.layout.pie()
+                .sort(null);
+
+            // add the pie chart, center it in the svg element
+            var svg = d3.select("#right").append("svg")
+                .attr("id", "pieSvg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            var path = svg.selectAll("path")
+                .data(groups)
+                .enter().append("path")
+                .style("fill", color)
+                .each(function() { this._current = {startAngle: 0, endAngle: 0}; });
+
+            // begin building legend to go inside the donut
+            var legendSize = 18;                                
+            var spacing = 4;   
+
+            // build the legend such that it is centered within donut
+            var legend = svg.selectAll('.legend')                 
+                .data(color.domain())                                   
+                .enter()                                             
+                .append('g')                                         
+                .attr('class', 'legend')                               
+                .attr('transform', function(d, i) {                    
+                    var legendHeight = legendSize + spacing;         
+                    var offset =  legendHeight * color.domain().length / 2;     
+                    var horizontal = -2 * legendSize - 20;                      
+                    var vertical = i * legendHeight - offset;                     
+                    return 'translate(' + horizontal + ',' + vertical + ')';       
+                });                                                  
+
+            // refreshes the pie chart and labels with new information
+            dispatch.on("statechange.pie", function(d) {
+                path.data(pie.value(function(g) {
+                    // console.log("Ran again: " + d[g]); 
+
+                    // clear the existing legend                            
+                    legend.text("");
+
+                    //re draw the legend with new information
+                    legend.append('rect')                                
+                    .attr('width', legendSize)                    
+                    .attr('height', legendSize)                       
+                    .style('fill', color)                                   
+                    .style('stroke', color); 
+
+                    legend.append('text')                                     
+                    .attr('x', legendSize + spacing)              
+                    .attr('y', legendSize - spacing)              
+                    .text(function(e) { return e + ", " + d[e]; });   
+                    return d[g];
+                })(groups)).transition()
+                    .attrTween("d", function(d) {
+                        var interpolate = d3.interpolate(this._current, d);
+                        this._current = interpolate(0);
+                        return function(t) {
+                            // console.log("this function ran again");
+                            return arc(interpolate(t));
+                        };
+                    });                 
+            });
+        }); 
+    });               
+</script>
+<script>
 var width = 1050;
 var height = 600;
 var clickedID;
 
-var projection = d3.geo.albersUsa().scale(1250).translate([width/2, height/2]);
+var projection = d3.geo.albersUsa().scale(1260).translate([width/2, height/2]);
 
 var path = d3.geo.path().projection(projection);
 
 var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height)
-    .style("margin-left", "85px");
+    .style("margin-left", "60px")
+    .style("margin-top", "0px");
 
 var states;
 d3.json("../data/us.json", function(error, shapes){
@@ -327,11 +596,11 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
             var x = d3.mouse(svg.node())[0];
             var y = d3.mouse(svg.node())[1];
             if(y+panelHeight<=height){
-            	panel.style("left", (d3.event.pageX-80)+"px")
-                .style("top", (d3.event.pageY-150)+"px");
+            	panel.style("left", (d3.event.pageX-87)+"px")
+                .style("top", (d3.event.pageY-350)+"px");
             }
             else{
-            	panel.style("left", (d3.event.pageX-80)+"px")
+            	panel.style("left", (d3.event.pageX-87)+"px")
                 .style("top", (d3.event.pageY-380)+"px");
             }
 
@@ -426,13 +695,12 @@ function displayDonutChart(ratios){
      .style("text-anchor", "middle")
      .style("fill", "black");
 }
-
 function generateDonutChartLegend(svg){
 	//"#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"
-	var textInfo = [{ x: 20, y: 8, text: "Race" }, { x: 140, y: 8, text: "Religion" }, { x: 25, y: 42, text: "Ethnicity" }, 
-	{ x: 145, y: 42, text: "Disability" }, { x: 20, y: 68, text: "Gender" }, { x: 135, y: 68, text: "Sexual Orientation"}];
+	var textInfo = [{ x: 20, y: 8, text: "Race" }, { x: 145, y: 8, text: "Religion" }, { x: 25, y: 42, text: "Ethnicity" }, 
+	{ x: 145, y: 42, text: "Disability" }, { x: 20, y: 76, text: "Gender" }, { x: 135, y: 76, text: "Sexual Orientation"}];
 
-    var rectInfo = [{ x: 40, y: 0, color: "#1395BA" }, { x: 165, y: 0, color: "#A2B86C" }, { x: 50, y: 35, color: "#EBC844" }, { x: 175, y: 35, color: "#F16C20" }, { x: 40, y: 60, color: "#C02E1D" }, { x: 180, y: 60, color: "#0D3C55" }];
+    var rectInfo = [{ x: 50, y: 0, color: "#1395BA" }, { x: 175, y: 0, color: "#A2B86C" }, { x: 50, y: 35, color: "#EBC844" }, { x: 175, y: 35, color: "#F16C20" }, { x: 50, y: 70, color: "#C02E1D" }, { x: 175, y: 70, color: "#0D3C55" }];
 
 	svg.selectAll(".donutChartLegendText").data(textInfo)
 	.enter()
@@ -497,6 +765,354 @@ function generateMapLegend(toggleOn){
     .style("font-size", "8px")
     .text("*Toggle scales by population, reporting crimes per 10,000 people.");
 }
+</script>
+<script type="text/javascript">
+    var paddingSeason = 50;
+    var heightSeason = 350;
+    var widthSeason = 1000;
+    var svgSeason = d3.select("#Season").append("svg")
+    .attr("class", "svgSeason")
+    .attr("width", widthSeason)
+    .attr("height", heightSeason);
+
+
+    //load and map data
+    var data = [];
+    var city = [];
+    var indexChosen = 0;
+    var lines = [];
+
+    d3.csv("../data/hate-crime.csv", function(error, states) {
+        if (error) throw error;          
+        city = d3.map();
+
+        states = states.filter(function(d) { return ! isNaN(d["4th quarter"]) &&  ! isNaN(d["3rd quarter"]) &&
+            ! isNaN(d["2nd quarter"]) && ! isNaN(d["1st quarter"]) }); 
+
+        states.forEach( function(d) { city.set(d["Agency Name"], d); });
+          
+        //append other options to dropmenu
+        var dropDown = d3.select("#menu").append("select")
+            .attr("id", "dropdown");
+
+        var options = dropDown.selectAll("option")
+            .data(city.values())
+            .enter().append("option")
+            .attr("value", function(d) { return d["Agency Name"]; })
+            .text(function(d) { return d["Agency Name"]+ "," + d["State Code"]; });
+
+        document.getElementById("dropdown").options[0].selected = true;
+        
+        dropDown.on("change", menuChanged);
+
+        var index = city.keys();
+
+        //construct array to represent in in different season
+        city.values().forEach(function(d) {
+            var temp = [d["1st quarter"], d["2nd quarter"], d["3rd quarter"], d["4th quarter"]];
+            temp.sort(function(a,b) {return a - b});
+            var maxValue = temp[3];
+            var totalValue = Number(d["1st quarter"]) + Number(d["2nd quarter"]) + Number(d["3rd quarter"]) + Number(d["4th quarter"]);
+            var temp2 = {spring: d["1st quarter"], summer: d["2nd quarter"], fall: d["3rd quarter"], winter:d["4th quarter"], max: maxValue, total: totalValue};
+            data.push(temp2);
+        });
+
+        function menuChanged() {
+
+            //remove highlightline and circle from previous chosen
+            if (document.getElementById("highlight") != null) {
+                document.getElementById("highlight").remove();
+            }
+            if (document.getElementById("circle") != null) {
+                document.getElementById("circle").remove();
+            }
+
+            //display flying people for different options
+            for (var i = 0; i < 50; i++) {
+                document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+                document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+            }
+
+            document.getElementById("precentage").innerHTML = 0;
+
+            var selectedValue = d3.event.target.value;
+            indexChosen = index.indexOf(selectedValue.split(",")[0]);
+                
+            //highlight lines according to dropdown options from user
+            var highlightLine = d3.svg.line()
+                .x(function(d) {return xScaleSeason(d.season);})
+                .y(function(d) {return yScaleSeason(d[indexChosen]);});        
+
+            var path = svgSeason.append("path").attr("d", highlightLine(lines)).attr("id","highlight")
+                .style("stroke", "orange").style("fill","none").style("stroke-width","3px");
+                
+            //add animation to highlight line
+            var totalLength = path.node().getTotalLength();
+                
+            path.attr("stroke-dasharray", totalLength + " " + totalLength)
+            .attr("stroke-dashoffset", totalLength)
+            .transition()
+            .duration(1500)
+            .ease("linear")
+            .attr("stroke-dashoffset", 0);
+        };
+
+        //construct data for trend chart
+        var springData = {season: "spring"};
+        var summerData = {season: "summer"};
+        var fallData = {season: "fall"};
+        var winterData = {season: "winter"};
+
+        data.forEach(function(d,i) {
+            springData[i] = d.spring;
+            summerData[i] = d.summer;
+            fallData[i] = d.fall;
+            winterData[i] = d.winter;
+        });
+
+        lines.push(springData);
+        lines.push(summerData);
+        lines.push(fallData);
+        lines.push(winterData);
+
+        //create average line
+        var avg = [{season:"spring", data: 5.390}, {season: "summer", data:7.573}, {season:"fall", data: 7.926}, {season: "winter", data: 6.197} ];
+        var avgLine = d3.svg.line()
+            .x(function(d) {return xScaleSeason(d.season);})
+            .y(function(d) {return yScaleSeason(d.data);})
+
+        svgSeason.append("path").attr("d", avgLine(avg)).attr("id","averageLine")
+                .style("stroke", "black").style("fill","none").style("stroke-width","2.5px")
+                .style("stroke-dasharray", ("3, 3"));
+                     
+        //create all the lines
+        for (var i = 1; i < data.length; i++) {
+            var line = d3.svg.line()
+                .x(function(d) {return xScaleSeason(d.season);})
+                .y(function(d) {return yScaleSeason(d[i]);})
+                                 
+            svgSeason.append("path").attr("d", line(lines)).attr("id",i)
+            .style("stroke", "#C1C1C1").style("fill","none").style("stroke-width","1px")
+            .attr("opacity",0.5)
+            .on("mouseover", function() {
+                if (document.getElementById("location") != null) {
+                    document.getElementById("location").remove();
+                }
+
+                d3.select(this).style("stroke", "black").style("stroke-width", "2px");
+                svgSeason.append("text")
+                .attr("x", 0.5*(xScaleSeason("spring") + xScaleSeason("winter")))
+                .attr("y", 30)
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+                .attr("base-alignment", "middle")
+                .attr("id", "location")
+                .text(index[d3.select(this)[0][0].id]);
+            })
+            .on("mouseout", function() {  
+                if (document.getElementById("location") != null) {
+                    document.getElementById("location").remove();
+                }                     
+                d3.select(this).style("stroke", "#C1C1C1").style("stroke-width", "1px")
+                .attr("opacity",0.5);
+            });
+        }
+    });
+        
+    //display all the elements, set hidden to the "flying" person
+    for (var j = 0; j < 5; j++) {
+        ty = j * 150;
+
+        for (var i = 0; i < 10; i++) {
+            var tx = i * 110;
+
+            //normal people head
+            svgSeason.append("path")
+            .attr("id","person0_"+ (j*10 +i))
+            .attr("transform","scale(0.25),translate(" + (tx + 280) + "," + (ty + 330) + ")")
+            .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+            .attr("fill","none");
+
+            //normal people body
+            svgSeason.append("path")
+            .attr("id","person1_"+ (j*10 +i))
+            .attr("transform","scale(0.25),translate(" + (tx + 280) + ","  + (ty + 330) + ")")
+            .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
+            .attr("fill","none");
+                
+            //flying people head, set hidden default
+            svgSeason.append("path")
+            .attr("id","personChosen0_"+ (j*10 +i))
+            .attr("transform","scale(0.25),translate(" + (tx + 280) + "," + (ty + 330) + ")")
+            .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+            .attr("fill","none");
+            document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
+
+            //flying people body, set hidden default
+            svgSeason.append("path")
+            .attr("id","personChosen1_"+ (j*10 +i))
+            .attr("transform","scale(0.25),translate(" + (tx + 280) + ","  + (ty + 330) + ")")
+            .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+            .attr("fill","none")
+            .attr("display","hidden");
+
+            document.getElementById("personChosen1_"+ (j*10 +i)).style.visibility = "hidden";
+            document.getElementById("precentage").innerHTML = "0";
+        }
+    } 
+
+    //display the percentage of spring to whole year in specific city or default the whole USA
+    function spring(n) {
+
+        if (document.getElementById("circle") != null) {
+            document.getElementById("circle").remove();
+        }
+
+        number = Math.round(data[n]["spring"] / data[n]["max"] * 50);
+        percent = d3.format(".1f")(data[n]["spring"] / data[n]["total"] * 100);
+            
+        svgSeason.append("circle").attr("r",4)
+        .attr("cx", xScaleSeason("spring"))
+        .attr("cy", yScaleSeason(data[n].spring))
+        .attr("id", "circle")
+        .attr("fill", "#66FFE6");
+
+        for (var i = 0; i < number; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen0_"+ i).style.fill = "#00FA9A";
+            document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen1_"+ i).style.fill = "#00FA9A";
+        }
+        for (var i = number; i < 50; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+            document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+        }
+        document.getElementById("precentage").innerHTML =percent;
+            
+    }
+
+    //display the percentage of summer to whole year in specific city or default the whole USA
+    function summer(n) {
+
+        if (document.getElementById("circle") != null) {
+            document.getElementById("circle").remove();
+        }
+
+        svgSeason.append("circle").attr("r",4)
+        .attr("cx", xScaleSeason("summer"))
+        .attr("cy", yScaleSeason(data[n].summer))
+        .attr("id", "circle")
+        .attr("fill", "#66FFE6");
+
+        number = Math.round(data[n]["summer"] / data[n]["max"] * 50);
+        percent = d3.format(".1f")(data[n]["summer"] / data[n]["total"] * 100);
+
+        for (var i = 0; i < number; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen0_"+ i).style.fill = "#DE3163";
+            document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen1_"+ i).style.fill = "#DE3163";
+        }
+        for (var i = number; i < 50; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+            document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+        }
+
+        document.getElementById("precentage").innerHTML = percent;
+
+    }
+
+    //display the percentage of fall to whole year in specific city or default the whole USA
+    function fall(n) {
+
+        if (document.getElementById("circle") != null) {
+            document.getElementById("circle").remove();
+        }
+
+        svgSeason.append("circle").attr("r",4)
+        .attr("cx", xScaleSeason("fall"))
+        .attr("cy", yScaleSeason(data[n].fall))
+        .attr("id", "circle")
+        .attr("fill", "#66FFE6");
+
+        number = Math.round(data[n]["fall"] / data[n]["max"] * 50);
+        percent = d3.format(".1f")(data[n]["fall"] / data[n]["total"] * 100);
+
+        for (var i = 0; i < number; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen0_"+ i).style.fill = "gold";
+            document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen1_"+ i).style.fill = "gold";
+        }
+        for (var i = number; i < 50; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+            document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+        }
+            
+        document.getElementById("precentage").innerHTML = percent;  
+
+    }
+        
+    //display the percentage of winter to whole year in specific city or default the whole USA
+    function winter(n) { 
+
+        if (document.getElementById("circle") != null) {
+            document.getElementById("circle").remove();
+        }
+
+        svgSeason.append("circle").attr("r",4)
+        .attr("cx", xScaleSeason("winter"))
+        .attr("cy", yScaleSeason(data[n].winter))
+        .attr("id", "circle")
+        .attr("fill", "#66FFE6");
+
+        number = Math.round(data[n]["winter"] / data[n]["max"] * 50);
+        percent = d3.format(".1f")(data[n]["winter"] / data[n]["total"] * 100);
+
+        for (var i = 0; i < number; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen0_"+ i).style.fill = "#87CEFA";
+            document.getElementById("personChosen1_"+ i).style.visibility = "visible";
+            document.getElementById("personChosen1_"+ i).style.fill = "#87CEFA";
+        }
+        for (var i = number; i < 50; i++) {
+            document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
+            document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
+        }
+
+        document.getElementById("precentage").innerHTML = percent;
+
+    }
+
+    //create x and y axis for line chart
+    var xScaleSeason = d3.scale.ordinal().domain(['Spring','Summer','Fall','Winter']).range([535,660,785,910]);
+    var yScaleSeason = d3.scale.pow().exponent(.5).domain([0,100]).range([heightSeason - paddingSeason, paddingSeason]);
+
+    var xAxisSeason = d3.svg.axis().scale(xScaleSeason).orient("bottom").ticks(4);
+    var yAxisSeason = d3.svg.axis().scale(yScaleSeason).orient("left").ticks(10);
+        
+    svgSeason.append("g").attr("transform", "translate(0," + (heightSeason - paddingSeason) + ")").attr("class", "axis")
+    .call(xAxisSeason); 
+    svgSeason.append("g").attr("transform", "translate(" + 535 + ",0)").attr("class", "axis")
+    .call(yAxisSeason);
+
+    svgSeason.append("text")
+    .attr("x", 495)
+    .attr("y", 0.5 * heightSeason)
+    .style("font-size", 13)
+    .attr("text-anchor", "middle")
+    .attr("base-alignment", "middle")
+    .attr("transform", "rotate(-90,495, 175)")
+    .text("Number  of  cases");
+
+    svgSeason.append("text")
+    .attr("x", 0.5 * (535 + 910))
+    .attr("y", (heightSeason - 0.3 * paddingSeason))
+    .style("font-size", 13)
+    .attr("text-anchor", "middle")
+    .attr("base-alignment", "middle")
+    .text("Season");
+
 </script>
 </body>
 </html>
