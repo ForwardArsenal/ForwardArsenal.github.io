@@ -1,13 +1,15 @@
 <html>
 <head>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
 <style>
 	body { font-family: "Open Sans"; }
     div { margin: 30px; }
     svg { border: solid #DCDCDC 1px;
           background-color: #FFFFFF;
-          /*margin-left:auto; margin-right:auto; display:block;*/
+          margin-left:auto; margin-right:auto; display:block;
       }
     .axis path { fill: none; stroke: black; stroke-width: 2;}
     .axis line { stroke: black; }
@@ -69,8 +71,8 @@
     <button class = "button" onclick = "summer(indexChosen)" style="position:relative; left:320px;">Summer</button>
     <button class = "button" onclick = "fall(indexChosen)" style="position:relative; left:320px;">Fall</button>
     <button class = "button" onclick = "winter(indexChosen)" style="position:relative; left:320px;">Winter</button>
-    <p class = "center">The precentage for this choice to all hate crime cases is </p>
-    <div id = "precentage" class = "center"></div>
+    <p class = "center">The precentage for this choice to all hate crime cases is <span id = "precentage" color = red></span> </p>
+    
 
 	<div id = "Season"></div>
     
@@ -199,7 +201,7 @@
                                  .y(function(d) {return yScale(d[i]);})
                                  
                     svg.append("path").attr("d", line(lines)).attr("id",i)
-                    .style("stroke", "gray").style("fill","none").style("stroke-width","1px")
+                    .style("stroke", "#C1C1C1").style("fill","none").style("stroke-width","1px")
                     .on("mouseover", function() {
                      	if (document.getElementById("location") != null) {
                         document.getElementById("location").remove();
@@ -219,7 +221,7 @@
                         if (document.getElementById("location") != null) {
                             document.getElementById("location").remove();
                         }                     
-                        d3.select(this).style("stroke", "gray").style("stroke-width", "1px");
+                        d3.select(this).style("stroke", "#C1C1C1").style("stroke-width", "1px");
                     });
                 }
         })
