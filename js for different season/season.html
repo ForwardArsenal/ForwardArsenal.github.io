@@ -3,22 +3,18 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<!-- <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'> -->
-
 
 
 <style>
 	body { font-family: "Open Sans"; }
     div { margin: 30px; }
-    svgSeason { border: solid #DCDCDC 1px;
+    svg { border: 1px solid black;
           background-color: #FFFFFF;
           margin-left:auto; margin-right:auto; display:block;
       }
     .axis path { fill: none; stroke: black; stroke-width: 2;}
     .axis line { stroke: black; }
     path {  stroke: black; stroke-width: 2; }
-    line { stroke: gray;}
     text { font-size: 10px; }
     .button {
     	position: relative;
@@ -74,14 +70,15 @@
     <button class = "button" onclick = "summer(indexChosen)" style="position:relative; left:320px;">Summer</button>
     <button class = "button" onclick = "fall(indexChosen)" style="position:relative; left:320px;">Fall</button>
     <button class = "button" onclick = "winter(indexChosen)" style="position:relative; left:320px;">Winter</button>
-    <p class = "center">The precentage for this choice to all hate crime cases is <span id = "precentage" color = "#D05050"></span> </p>
+    <p class = "center">The number of hate crime cases of &nbsp<span id = "seasonName" style = "color:red"></span>&nbsp is &nbsp<span id = "numberCases" style = "color:red"></span> , &nbspthe precentage for this choice to all hate crime cases in this region is &nbsp<span id = "precentage" style = "color:red"></span> &nbsp% </p>
+    <p class = "center">The most dangerous season for this region is &nbsp<span id = "dangerous" style = "color:red"></span> &nbsp </p>
     
 
 	<div id = "Season"></div>
     
 	<script type="text/javascript">
 	    var paddingSeason = 50;
-        var heightSeason = 350;
+        var heightSeason = 400;
         var widthSeason = 1000;
         var svgSeason = d3.select("#Season").append("svg")
         .attr("width", widthSeason)
@@ -145,8 +142,8 @@
             	document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
                 }
 
-                document.getElementById("precentage").innerHTML = 0 + " %";
-
+                document.getElementById("precentage").innerHTML = 0;
+                
             	var selectedValue = d3.event.target.value;
             	indexChosen = index.indexOf(selectedValue.split(",")[0]);
                 
@@ -167,8 +164,32 @@
                 .duration(1500)
                 .ease("linear")
                 .attr("stroke-dashoffset", 0);
-                };
 
+                //display most dangerous season
+                var dangerousSeason = "";
+
+                if (Number(data[indexChosen]["max"]) == Number(data[indexChosen]["spring"])) {
+                    document.getElementById("dangerous").innerHTML = "Spring";
+                    dangerousSeason = "Spring";
+                    spring(indexChosen);
+                }
+                if (Number(data[indexChosen]["max"]) == Number(data[indexChosen]["summer"])) {
+                    document.getElementById("dangerous").innerHTML = "Summer";
+                    dangerousSeason = "Summer";
+                    summer(indexChosen);
+                }
+                if (Number(data[indexChosen]["max"]) == Number(data[indexChosen]["fall"])) {
+                    document.getElementById("dangerous").innerHTML = "Fall";
+                    dangerousSeason = "Fall";
+                    fall(indexChosen);
+                }
+                if (Number(data[indexChosen]["max"]) == Number(data[indexChosen]["winter"])) {
+                    document.getElementById("dangerous").innerHTML = "Winter";
+                    dangerousSeason = "Winter";
+                    winter(indexChosen);
+                }            
+            }
+            
                 //construct data for trend chart
                 var springData = {season: "spring"};
             	var summerData = {season: "summer"};
@@ -194,8 +215,8 @@
                              .y(function(d) {return yScaleSeason(d.data);})
 
                 svgSeason.append("path").attr("d", avgLine(avg)).attr("id","averageLine")
-                             .style("stroke", "black").style("fill","none").style("stroke-width","2.5px")
-                             .style("stroke-dasharray", ("3, 3"));
+                             .style("stroke", "black").style("fill","none").style("stroke-width","2px")
+                             .style("stroke-dasharray", ("5, 2"));
                      
             	//create all the lines
                 for (var i = 1; i < data.length; i++) {
@@ -204,17 +225,18 @@
                                  .y(function(d) {return yScaleSeason(d[i]);})
                                  
                     svgSeason.append("path").attr("d", line(lines)).attr("id",i)
-                    .style("stroke", "#C1C1C1").style("fill","none").style("stroke-width","1px")
-                    .attr("opacity",0.5)
+                    .style("stroke", "#C1C1C1").style("fill","none").style("stroke-width","2px")
+                    .attr("opacity",0.2)
                     .on("mouseover", function() {
                      	if (document.getElementById("location") != null) {
                         document.getElementById("location").remove();
         	            }
 
-                        d3.select(this).style("stroke", "black").style("stroke-width", "2px");
+                        d3.select(this).style("stroke", "black").style("stroke-width", "2px")
+                        .attr("opacity", 1);
                      	svgSeason.append("text")
                      	.attr("x", 0.5*(xScaleSeason("spring") + xScaleSeason("winter")))
-                     	.attr("y", 30)
+                     	.attr("y", 100)
                      	.style("font-size", 20)
         		        .attr("text-anchor", "middle")
         		        .attr("base-alignment", "middle")
@@ -225,8 +247,8 @@
                         if (document.getElementById("location") != null) {
                             document.getElementById("location").remove();
                         }                     
-                        d3.select(this).style("stroke", "#C1C1C1").style("stroke-width", "1px")
-                        .attr("opacity",0.5);
+                        d3.select(this).style("stroke", "#C1C1C1").style("stroke-width", "2px")
+                        .attr("opacity",0.2);
                     });
                 }
         })
@@ -241,37 +263,45 @@
                 //normal people head
 		        svgSeason.append("path")
 		        .attr("id","person0_"+ (j*10 +i))
-		        .attr("transform","scale(0.25),translate(" + (tx + 250) + "," + (ty + 300) + ")")
+		        .attr("transform","scale(0.25),translate(" + (tx + 320) + "," + (ty + 530) + ")")
 		        .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+                .attr("stroke-width", "2px")
 		        .attr("fill","none");
 
                 //normal people body
 		        svgSeason.append("path")
 		        .attr("id","person1_"+ (j*10 +i))
-		        .attr("transform","scale(0.25),translate(" + (tx + 250) + ","  + (ty + 300) + ")")
+		        .attr("transform","scale(0.25),translate(" + (tx + 320) + ","  + (ty + 530) + ")")
 		        .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
+                .attr("stroke-width", "2px")
 		        .attr("fill","none");
                 
                 //flying people head, set hidden default
 		        svgSeason.append("path")
 		        .attr("id","personChosen0_"+ (j*10 +i))
-		        .attr("transform","scale(0.25),translate(" + (tx + 250) + "," + (ty + 300) + ")")
+		        .attr("transform","scale(0.25),translate(" + (tx + 320) + "," + (ty + 530) + ")")
                 .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
-                .attr("fill","none");
-			    document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
+                .attr("stroke-width", "2px")
+                .attr("fill","gold");
+			    //document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
 
                 //flying people body, set hidden default
 			    svgSeason.append("path")
 			        .attr("id","personChosen1_"+ (j*10 +i))
-			        .attr("transform","scale(0.25),translate(" + (tx + 250) + ","  + (ty + 300) + ")")
+			        .attr("transform","scale(0.25),translate(" + (tx + 320) + ","  + (ty + 530) + ")")
 			        .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
-			        .attr("fill","none")
-			        .attr("display","hidden");
+                    .attr("stroke-width", "2px")
+			        .attr("fill","gold");
 
-			    document.getElementById("personChosen1_"+ (j*10 +i)).style.visibility = "hidden";
-			    document.getElementById("precentage").innerHTML = "0 %";
+			    //document.getElementById("personChosen1_"+ (j*10 +i)).style.visibility = "hidden";
 	        }
 	    } 
+
+        document.getElementById("precentage").innerHTML = "29.3";
+        document.getElementById("dangerous").innerHTML = "Fall";
+        document.getElementById("numberCases").innerHTML = "612";
+        document.getElementById("seasonName").innerHTML = "Fall";
+
 
         //display the percentage of spring to whole year in specific city or default the whole USA
         function spring(n) {
@@ -287,7 +317,7 @@
         	.attr("cx", xScaleSeason("spring"))
         	.attr("cy", yScaleSeason(data[n].spring))
         	.attr("id", "circle")
-        	.attr("fill", "#00FA9A");
+        	.attr("fill", "orange");
 
 	       	for (var i = 0; i < number; i++) {
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -299,7 +329,9 @@
 	       		document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	}
-	       	document.getElementById("precentage").innerHTML = "" + percent + " %";
+	       	document.getElementById("precentage").innerHTML =percent;
+            document.getElementById("numberCases").innerHTML = data[indexChosen]["spring"];
+            document.getElementById("seasonName").innerHTML = "Spring";
 	       	
         }
 
@@ -314,7 +346,7 @@
         	.attr("cx", xScaleSeason("summer"))
         	.attr("cy", yScaleSeason(data[n].summer))
         	.attr("id", "circle")
-        	.attr("fill", "#DE3163");
+        	.attr("fill", "orange");
 
         	number = Math.round(data[n]["summer"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["summer"] / data[n]["total"] * 100);
@@ -330,7 +362,10 @@
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	}
 
-	       	document.getElementById("precentage").innerHTML = percent + " %";
+	       	document.getElementById("precentage").innerHTML = percent;
+             document.getElementById("numberCases").innerHTML = data[indexChosen]["summer"];
+             document.getElementById("seasonName").innerHTML = "Summer";
+
 
         }
 
@@ -345,7 +380,7 @@
         	.attr("cx", xScaleSeason("fall"))
         	.attr("cy", yScaleSeason(data[n].fall))
         	.attr("id", "circle")
-        	.attr("fill", "gold");
+        	.attr("fill", "orange");
 
         	number = Math.round(data[n]["fall"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["fall"] / data[n]["total"] * 100);
@@ -361,7 +396,9 @@
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	}
 	       	
-	       	document.getElementById("precentage").innerHTML = percent + " %";  
+	       	document.getElementById("precentage").innerHTML = percent;
+             document.getElementById("numberCases").innerHTML = data[indexChosen]["fall"]; 
+             document.getElementById("seasonName").innerHTML = "Fall"; 
 
         }
         
@@ -376,7 +413,7 @@
         	.attr("cx", xScaleSeason("winter"))
         	.attr("cy", yScaleSeason(data[n].winter))
         	.attr("id", "circle")
-        	.attr("fill", "#87CEFA");
+        	.attr("fill", "orange");
 
         	number = Math.round(data[n]["winter"] / data[n]["max"] * 50);
         	percent = d3.format(".1f")(data[n]["winter"] / data[n]["total"] * 100);
@@ -392,13 +429,15 @@
 			    document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
 	       	}
 
-	       	document.getElementById("precentage").innerHTML = percent + " %";
+	       	document.getElementById("precentage").innerHTML = percent;
+            document.getElementById("numberCases").innerHTML = data[indexChosen]["winter"];
+            document.getElementById("seasonName").innerHTML = "Winter";
 
         }
 
         //create x and y axis for line chart
-        var xScaleSeason = d3.scale.ordinal().domain(['Spring','Summer','Fall','Winter']).range([500, 660, 820, 980]);
-        var yScaleSeason = d3.scale.pow().exponent(.5).domain([0,100]).range([heightSeason - paddingSeason, paddingSeason]);
+        var xScaleSeason = d3.scale.ordinal().domain(['Spring','Summer','Fall','Winter']).range([535,660,785,910]);
+        var yScaleSeason = d3.scale.pow().exponent(.5).domain([0,100]).range([heightSeason - paddingSeason, paddingSeason*2]);
 
         var xAxisSeason = d3.svg.axis().scale(xScaleSeason).orient("bottom")
                     .ticks(4);
@@ -407,26 +446,75 @@
         
         svgSeason.append("g").attr("transform", "translate(0," + (heightSeason - paddingSeason) + ")").attr("class", "axis")
         .call(xAxisSeason); 
-        svgSeason.append("g").attr("transform", "translate(" + 500 + ",0)").attr("class", "axis")
+        svgSeason.append("g").attr("transform", "translate(" + 535 + ",0)").attr("class", "axis")
         .call(yAxisSeason);
 
         svgSeason.append("text")
-                        .attr("x", 460)
-                        .attr("y", 0.5 * heightSeason)
-                        .style("font-size", 13)
-                        .attr("text-anchor", "middle")
-                        .attr("base-alignment", "middle")
-                        .attr("transform", "rotate(-90,460, 175)")
-                        .text("Number");
+            .attr("x", 490)
+            .attr("y", 225)
+            .style("font-size", 13)
+            .attr("text-anchor", "middle")
+            .attr("base-alignment", "middle")
+            .attr("transform", "rotate(-90,490, 225)")
+            .text("Number  of  cases");
 
         svgSeason.append("text")
-                        .attr("x", 740)
-                        .attr("y", (heightSeason - 0.3*paddingSeason))
-                        .style("font-size", 13)
-                        .attr("text-anchor", "middle")
-                        .attr("base-alignment", "middle")
-                        .text("Season");
+            .attr("x", 0.5 * (535 + 910))
+            .attr("y", (heightSeason - 0.3 * paddingSeason))
+            .style("font-size", 13)
+            .attr("text-anchor", "middle")
+            .attr("base-alignment", "middle")
+            .text("Season");
 
+        //label for the seasonsvg
+        svgSeason.append("line")
+            .attr("x1",700)
+            .attr("y1",20)
+            .attr("x2",730)
+            .attr("y2",20)
+            .attr("stroke-width","2px")
+            .attr("stroke","black")
+            .style("stroke-dasharray", ("5, 2"));
+        svgSeason.append("text")
+            .attr("x",750)
+            .attr("y",23)
+            .text("average number of hate crime cases in USA");
+
+        svgSeason.append("line")
+            .attr("x1",700)
+            .attr("y1",33)
+            .attr("x2",730)
+            .attr("y2",33)
+            .attr("stroke-width","2px")
+            .attr("stroke","gray")
+            .style("opacity",0.2);
+        svgSeason.append("text")
+            .attr("x",750)
+            .attr("y",36)
+            .text("number of hate crime cases in cities among USA");
+
+        svgSeason.append("line")
+            .attr("x1",700)
+            .attr("y1",46)
+            .attr("x2",730)
+            .attr("y2",46)
+            .attr("stroke-width","3px")
+            .attr("stroke","orange");
+        svgSeason.append("text")
+            .attr("x",750)
+            .attr("y",49)
+            .text("number of hate crime cases in current city");
+        
+        // svgSeason.append("text")
+        //     .attr("x",700)
+        //     .attr("y",62)
+        //     .text("default colored people stands for the season which has largest");
+        // svgSeason.append("text")
+        //     .attr("x",700)
+        //     .attr("y",75)
+        //     .text("number of hate crime cases");
+
+         
 
       
 	</script>
