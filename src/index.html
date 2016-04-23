@@ -7,19 +7,18 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="font-awesome.css">
 <style>
+    .panel { padding-bottom: 65px; width: 1100px; margin-left: 100px; }
     .switch { 
-    	height: 30px;
-    	float: left;
-    	margin-top: 20px;
-    	margin-left: 10px;
+    	height: 28px;
+        margin-top: 20px;
+        float: left;
     }
     .toggle-text {
-    	height: 10px;
+    	height: 0px;
     	font-family: "Comic Sans MS";
     	font-size: 15px;
     	margin-top: 0px;
-    	margin-left: 35px;
-    	text-align: left;
+    	margin-left: 42px;
     }
     input.cmn-toggle-round-flat + label {
     	width: 120px;
@@ -40,13 +39,13 @@
         pointer-events: none; 
     }
     svg { background-color: white }
-    .panel-info { height: 220px; width: 940px; margin-left: 160px; margin-right: 200px; margin-bottom: 0px; border: none; }
-    .panel-heading { height: 60px; width: 400px; margin-left: 270px; margin-top: 180px; margin-bottom: 0px; }
-    .heading-text { font-family: "Comic Sans MS"; text-align: center; padding-top: 17px; font-size: 20px; }
+    .panel-info { height: 100px; width: 940px; margin-left: 160px; margin-right: 200px; margin-bottom: 0px; border: 1px solid black; }
+    .panel-heading { height: 60px; width: 400px; margin-left: 270px; margin-top: 80px; margin-bottom: 0px; }
+    .heading-text { font-family: "Comic Sans MS"; text-align: center; padding-top: 17px; font-size: 25px; }
     .info-heading { height: 60px; width: 180px; margin-left: 24px; margin-bottom: 0px; }
     .btn-text { font-family: "Comic Sans MS"; }
     .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; }
-    .btn-primary { margin-left: 0px; padding-left: 10px; width: 140px; margin-top: 20px; }
+    .btn-primary { margin-left: 18px; padding-left: 10px; width: 140px; margin-top: 20px; }
     .panel-success { position: absolute; height: 520px; width: 225px; outline: 5px solid green; box-shadow: 5px 5px;}
     .state-boundary { fill: #ccc; stroke: #ffffff; }
     .state-name { fill: #000000; fill-opacity: .8; font-size: 8px; font-weight: 300; text-anchor: middle; }
@@ -62,7 +61,7 @@
 </style>
 </head>
 <body>
-<div id="panel" class="panel panel-info">
+<div id="panel" class="panel">
 	<div class="panel-heading heading-text">Select a crime type to display!</div>
     <div class="panel-body">
     	<button id="race" type="button" class="btn btn-primary btn-text">Race</button>
@@ -89,18 +88,18 @@
 </div>
 <script>
 ///<div class="panel-heading heading-text info-heading" style="font-size: 15px">Hate Crime Info</div>
-var width = 1220;
+var width = 1050;
 var height = 600;
 var clickedID;
 
-var projection = d3.geo.albersUsa().scale(1150).translate([width/2, height/2]);
+var projection = d3.geo.albersUsa().scale(1250).translate([width/2, height/2]);
 
 var path = d3.geo.path().projection(projection);
 
 var svg = d3.select("#map").append("svg")
-    .attr("class", "svg-color")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .style("margin-left", "85px");
 
 var states;
 d3.json("../data/us.json", function(error, shapes){
@@ -328,12 +327,12 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
             var x = d3.mouse(svg.node())[0];
             var y = d3.mouse(svg.node())[1];
             if(y+panelHeight<=height){
-            	panel.style("left", (d3.event.pageX-10)+"px")
+            	panel.style("left", (d3.event.pageX-80)+"px")
                 .style("top", (d3.event.pageY-150)+"px");
             }
             else{
-            	panel.style("left", (d3.event.pageX-10)+"px")
-                .style("top", (d3.event.pageY-460)+"px");
+            	panel.style("left", (d3.event.pageX-80)+"px")
+                .style("top", (d3.event.pageY-380)+"px");
             }
 
         	d3.select("#city")
@@ -455,14 +454,14 @@ function generateDonutChartLegend(svg){
 function generateMapLegend(toggleOn){
 	d3.selectAll(".legendText").remove();
     //"#F7FE2E", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026"
-    var rectInfo = [{ x: 700, y: 0, color: "#F7FE2E"}, { x: 760, y: 0, color: "#fed976" }, { x: 820, y: 0, color: "#feb24c" }, 
-    { x: 880, y: 0, color: "#FE642E" }, { x: 940, y: 0, color: "#FE2E2E" }, { x: 1000, y: 0, color: "#bd0026" }];
+    var rectInfo = [{ x: 610, y: 0, color: "#F7FE2E"}, { x: 680, y: 0, color: "#fed976" }, { x: 750, y: 0, color: "#feb24c" }, 
+    { x: 820, y: 0, color: "#FE642E" }, { x: 890, y: 0, color: "#FE2E2E" }, { x: 960, y: 0, color: "#bd0026" }];
 
-    var toggleOffTextInfo = [{ x: 725, y: 30, text: "0~25" }, { x: 785, y: 30, text: "25~50" }, { x: 845, y: 30, text: "50~75" }, 
-    { x: 905, y: 30, text: "75~100" }, { x: 965, y: 30, text: "100~125" }, { x: 1025, y: 30, text: "125~152" }];
+    var toggleOffTextInfo = [{ x: 635, y: 30, text: "0~25" }, { x: 705, y: 30, text: "25~50" }, { x: 775, y: 30, text: "50~75" }, 
+    { x: 845, y: 30, text: "75~100" }, { x: 915, y: 30, text: "100~125" }, { x: 985, y: 30, text: "125~152" }];
     
-    var toggleOnTextInfo = [{ x: 725, y: 30, text: "0~5.43" }, { x: 785, y: 30, text: "5.43~10.86" }, { x: 845, y: 30, text:"10.86~16.29" }, 
-    { x: 905, y: 30, text: "16.29~21.71" }, { x: 965, y: 30, text: "21.71~27.14" }, { x: 1025, y:30, text: "27.14~32.57" }];
+    var toggleOnTextInfo = [{ x: 635, y: 30, text: "0~5.43" }, { x: 705, y: 30, text: "5.43~10.86" }, { x: 775, y: 30, text:"10.86~16.29" }, 
+    { x: 845, y: 30, text: "16.29~21.71" }, { x: 915, y: 30, text: "21.71~27.14" }, { x: 985, y:30, text: "27.14~32.57" }];
 
     svg.selectAll(".mapLegendRect").data(rectInfo)
     .enter()
@@ -489,12 +488,13 @@ function generateMapLegend(toggleOn){
         .attr("x", function(d){ return d.x; })
         .attr("y", function(d){ return d.y; })
         .text(function(d){ return d.text; });
+        
     }
     svg.append("text")
-    .attr("x", 920)
-    .attr("y", 50)
+    .attr("x", 860)
+    .attr("y", 48)
     .style("text-anchor", "middle")
-    .style("font-size", "9px")
+    .style("font-size", "8px")
     .text("*Toggle scales by population, reporting crimes per 10,000 people.");
 }
 </script>
