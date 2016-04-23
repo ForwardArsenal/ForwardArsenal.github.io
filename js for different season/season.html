@@ -80,7 +80,7 @@
 	<div id = "Season"></div>
     
 	<script type="text/javascript">
-	    var paddingSeason = 20;
+	    var paddingSeason = 50;
         var heightSeason = 350;
         var widthSeason = 1000;
         var svgSeason = d3.select("#Season").append("svg")
@@ -409,6 +409,25 @@
         .call(xAxisSeason); 
         svgSeason.append("g").attr("transform", "translate(" + 500 + ",0)").attr("class", "axis")
         .call(yAxisSeason);
+
+        svgSeason.append("text")
+                        .attr("x", 460)
+                        .attr("y", 0.5 * heightSeason)
+                        .style("font-size", 13)
+                        .attr("text-anchor", "middle")
+                        .attr("base-alignment", "middle")
+                        .attr("transform", "rotate(-90,460, 175)")
+                        .text("Number");
+
+        svgSeason.append("text")
+                        .attr("x", 740)
+                        .attr("y", (heightSeason - 0.3*paddingSeason))
+                        .style("font-size", 13)
+                        .attr("text-anchor", "middle")
+                        .attr("base-alignment", "middle")
+                        .text("Season");
+
+
       
 	</script>
 
