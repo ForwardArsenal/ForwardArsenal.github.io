@@ -116,7 +116,7 @@
     .well-text { /*font-family: "Comic Sans MS"; */font-family: "Open Sans";padding-top: 0px; color: black; font-size: 11px; line-height: 0%; white-space: nowrap; text-align: center; margin-left: 10px; text-align: center;}
     .donutChart { margin-top: 0px; padding-top: 0px; margin-bottom: 0px; }
     .legend { margin-left: 10px; margin-top: 10px; margin-bottom: 10px;}
-    .legendText { text-anchor: middle; font-size: 11px; }
+    .legendText { text-anchor: middle; font-size: 10px; }
     .donutChartLegendText { font-size: 6px; text-anchor: middle; }
     .donutChartLegendRect { width: 40px; height: 10px; }
     .mapLegendRect { width: 50px; height: 10px; }
@@ -803,7 +803,8 @@ function displayDonutChart(ratios){
      .attr("dx", ".5em")
      .attr("dy", ".5em")
      .style("stroke", "white")
-     .style("font-size", "8px")
+     .style("font-size", "7px")
+     .style("font-weight",100)
      .text(function(d){ 
      	if(d.data["ratio"]!=0.0){
      	    return (d.data["ratio"]*100).toFixed(1)+"%";
