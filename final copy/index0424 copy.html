@@ -6,9 +6,11 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
 <style>
    /* The overview's style */
-    body { font-family: "Open Sans"; color: #333;}
+    body { font-family: "Roboto Slab"; color: #333;}
     div { margin: 20px; /*border: 1px solid black;*/}
     #pieSvg {
         background-color: #FFFFFF;
@@ -23,16 +25,21 @@
         font-weight: bold;
         font-size:15px;
     }
-    #title h1 {font-size: 3em;}
-    #title h3 {font-size: 2em;}
+    .svg1 {
+        width: 75%;
+        /*margin: 0 auto;*/
+        margin-left:auto; margin-right:auto; display:block;
+    }
+    #title h1 {font-size: 3em;text-align: center;}
+    #title h3 {font-size: 2em;text-align: center;}
     #left {
         margin-top: 50px;
         float: left;
-        width: 45%;
+        width: 30%;
         /*border: 1px solid black;*/
     }
     #right {
-        float: right;
+        float: left;
         width: 45%;
         /*border: 1px solid black;*/
     }
@@ -46,22 +53,39 @@
 </style>
 <style>
     /*  The map's style */
-    .panel { width:80%;padding-bottom: 65px; width: 1100px; height: 250px; margin-left: 100px; margin-top: 140px; margin-bottom: 0px; border: none; }
+    .panel { width:80%;padding-bottom: 65px; width: 1100px; height: 250px; /*margin-left: 100px; margin-top: 140px; margin-bottom: 0px; border: none;*/ margin-left:auto; margin-right:auto; display:block;}
     .switch { 
-    	height: 28px;
+    	height: 20px;
         margin-top: 0px;
         float: left;
+        margin-right: 10px;
     }
     .toggle-text {
 /*    	font-family: "Comic Sans MS";*/
         font-family: "Open Sans";
     	font-size: 15px;
+        font-weight: bold;
         margin-bottom: 5px;
-    	margin-left: 70px;
+    	margin-left: 80px;
+    }
+    .svg2 {
+        width: 900px;
+        margin: auto;
+        margin-top: 20px;
+    }
+    #Ratio {
+        float: left;
+        font-size: 20px;
+        font-weight: bold;
+        margin-right: 60px;
+    }
+    #TypeChosen {
+        float: left;
+        font-size: 20px;
     }
     input.cmn-toggle-round-flat + label {
-    	width: 120px;
-        height: 40px;
+    	width: 95px;
+        height: 25px;
     }
     .arc text { font-family: "Comic Sans MS"; font-size: 5px; }
     .arc path { stroke: #fff; }
@@ -77,25 +101,27 @@
         pointer-events: none; 
     }
     svg { background-color: white }
-    .panel-heading { height: 60px; width: 400px; margin-left: 270px; margin-top: 80px; margin-bottom: 0px; }
-    .heading-text { /*font-family: "Comic Sans MS";*/ font-family: "Open Sans";text-align: center; padding-top: 17px; font-size: 25px; margin-left:auto; margin-right:auto; display:block;}
+    .panel-heading { height: 60px; width: 800px; /*margin-left: 270px; margin-top: 80px; margin-bottom: 0px; */margin-left:auto; margin-right:auto; display:block;}
+    .heading-text { /*font-family: "Comic Sans MS";*/ font-family: "Open Sans";text-align: center; padding-top: 17px; font-size: 2em; }
     .info-heading { height: 60px; width: 180px; margin-left: 24px; margin-bottom: 0px; }
     .btn-text { /*font-family: "Comic Sans MS";*/ font-family: "Open Sans";white-space: nowrap; }
-    .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; border: none;}
+    .panel-body { /*margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; border: none;*/margin-left:auto; margin-right:auto; display:block;}
     .btn-primary { margin-left: 18px; padding-left: 10px; width: 140px; margin-top: 20px; }
-    .panel-success { position: absolute; height: 440px; width: 225px; outline: 5px solid #feb24c; /*box-shadow: 5px 5px;*/}
+    .panel-success { position: absolute; height: 410px; width: 225px; outline: 2px solid #c1c1c1; background-color: rgba(256,256,256,0.8);
+    /*box-shadow: 5px 5px;*/}
     .state-boundary { fill: #c1c1c1; stroke: #ffffff; stroke-width: 3px;}
     .state-name { font-family:  "Open Sans"; fill: #000000; fill-opacity: .8; font-size: 10px; font-weight: 350; text-anchor: middle; }
     .location { fill: red; fill-opacity: .8; }
-    .well { position: static; margin-top: 5px; margin-bottom: 5px; height: 160px; width: 180px; margin-left: 0px; padding-top: 0px; margin-right: 0px; padding-left: 10px; }
+    .well { position: static; margin-top: 5px; margin-bottom: 5px; height: 140px; width: 180px; margin-left: 25px; padding-top: 0px; margin-right: 20px; padding-left: 10px; }
     .well-text { /*font-family: "Comic Sans MS"; */font-family: "Open Sans";padding-top: 0px; color: black; font-size: 11px; line-height: 0%; white-space: nowrap; text-align: center; margin-left: 10px; text-align: center;}
     .donutChart { margin-top: 0px; padding-top: 0px; margin-bottom: 0px; }
-    .legend { margin-left: 10px; }
-    .legendText { text-anchor: middle; font-size: 10px; }
-    .donutChartLegendText { font-size: 8px; text-anchor: middle;}
+    .legend { margin-left: 10px; margin-top: 10px; margin-bottom: 10px;}
+    .legendText { text-anchor: middle; font-size: 11px; }
+    .donutChartLegendText { font-size: 6px; text-anchor: middle; }
     .donutChartLegendRect { width: 40px; height: 10px; }
     .mapLegendRect { width: 50px; height: 10px; }
     .mapButton {
+        font-family: "Lato", sans-serif;
         position: relative;
         background-color: #FFFFFF;
         font-size: 15px;
@@ -103,7 +129,7 @@
         padding: 10px 10px;
         height: 40px;
         width: 150px;
-        border: solid #000000 1px;
+        border: solid #6B6B6B 2px;
         text-align: center;
         vertical-align: center;
         -webkit-transition-duration: 0.4s; /* Safari */
@@ -116,14 +142,14 @@
         margin-top: 10px; 
     }
     .mapButton:hover {
-        background-color: #E0FFFF; 
+        background-color: #e7e7e7; 
         /*background-color: #feb24c;
         background-opacity: 0.5;*/
         color: black;
     }
     .mapButton:after {
         content: "";
-        background: #66FFE6;
+        background: #c2c2c2;
         display: block;
         position: absolute;
         padding-top: 300%;
@@ -154,7 +180,8 @@
     text { font-size: 10px; }
     button {
         /*font-family: "Comic Sans MS";*/
-        font-family: "Open Sans";
+        font-family: "Lato", sans-serif;
+
         position: relative;
         background-color: #FFFFFF;
         border: none;
@@ -163,7 +190,7 @@
         padding: 10px 10px;
         height: 40;
         width: 120px;
-        border: solid #000000 1px;
+        border: solid #6B6B6B 2px;
         text-align: center;
         vertical-align: center;
         -webkit-transition-duration: 0.4s; /* Safari */
@@ -176,7 +203,7 @@
     }
     button:after {
         content: "";
-        background: #66FFE6;
+        background: #c1c1c1;
         display: block;
         position: absolute;
         padding-top: 300%;
@@ -193,12 +220,13 @@
         transition: 0s
     }
     button:hover {
-    background-color: #E0FFFF; 
+    background-color: #e7e7e7; 
     color: black;
+    font-size: 15px;
     }
 
     button {
-        float: left;
+        float: right;
     }
     .center {
         margin-top: 15px;
@@ -211,6 +239,7 @@
         margin: auto;
         margin-top: 20px;
     } 
+    
     #menu {
         margin: 10px 10px 0 0;
         padding: 0;
@@ -219,7 +248,7 @@
     }
 
     .buttonList {
-        width: 90%;
+        width: 85%;
         /*margin: 0 auto;*/
         margin-left:auto; margin-right:auto; display:block;
     }
@@ -243,61 +272,71 @@
 <body>
 <div id="title">
     <h1>Hate Crimes Across the United States</h1>
-    <h3>The most dangerous cities in the US for hate crimes, <br> as reported by the FBI, 2013</h3>
+    <h3>The most dangerous cities in the US for hate crimes <br> as reported by the FBI, 2013</h3>
 </div>
+<div class = "svg1">
 <div id="left">
+    <br><br><br><br>
     Although we often like to think of the US as a place of acceptance, hate crimes and bias incidents are still unfortunately prevalent.  In 2013, there were <span class="emphasize"> 6,921 hate crimes </span> reported to the FBI.  These crimes were perpetrated and recorded on the basis of race, ethnicity, religion, gender and gender identity, disability and sexual-orientation.
     <br><br>
     These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The adjacent pie chart shows breakdown by motivation, the map illustrates the worst offending cities by type, with the graphic below showing seasonal variation in crime volume.
 </div>
 <div id="right"></div>
+</div>
 
 <div class="clear"></div>
+    <br>
 
 <div id="panel" class="panel">
+	<div class="panel-heading heading-text" style= "Roboto Slab">Select a Crime Type to Display</div>
+    <div class="panel-body">    	
+    	<button id="gender" type="button" class="mapButton btn-text">Gender</button>
+        <button id="disability" type="button" class="mapButton btn-text">Disability</button> 
+        <button id="ethnicity" type="button" class="mapButton btn-text">Ethnicity</button>
+        <button id="sex" type="button" class="mapButton btn-text">Sexual Orientation</button>
+        <button id="religion" type="button" class="mapButton btn-text">Religion</button>
+        <button id="race" type="button" class="mapButton btn-text">Race</button>
 
-	<div class="panel-heading heading-text">Select a crime type to display</div>
-    <br><br>
-    <div class="panel-body">
-    	<button id="race" type="button" class="mapButton btn-text">Race</button>
-    	<button id="religion" type="button" class="mapButton btn-text">Religion</button>
-    	<button id="sex" type="button" class="mapButton btn-text">Sexual Orientation</button>
-    	<button id="ethnicity" type="button" class="mapButton btn-text">Ethnicity</button>
-    	<button id="disability" type="button" class="mapButton btn-text">Disability</button>
-    	<button id="gender" type="button" class="mapButton btn-text">Gender</button> 
     </div>
 
-    <div class="toggle-text">Ratio</div>
-    <div class="switch">
+    <div class = "svg2">
+    <br>
+    <div class="switch" >
         <input id="toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" value="false">
         <label for="toggle"></label>
-    </div>    
+    </div>
+    <p id = "Ratio">Ratio</p> 
+    <p id = "TypeChosen">Here are the information about <span id = "typeChosen"  style = "color: red;
+        font-weight: bold; font-size:20px" ></span>&nbspHate Crime.</p>
+    </div>   
 </div>
 <div id="map"></div>
-<div id="info" class="panel panel-success" style="visibility: hidden">
-    <div class="panel-body">
+<div id="info" class="panel-success" style="visibility: hidden">
+    <!-- <div class="panel-body"> -->
         <div class="well">
             <div id="city" class="well-text"></div>
             <div id="population" class="well-text"></div>
             <div id="crime" class="well-text"></div>
             <div id="rank" class="well-text"></div>
         </div>
-    </div>
+    <!-- </div> -->
 </div>
-<br><br>
+<br>
+<div class="panel-heading heading-text" style= "Roboto Slab">Hate Crime and Season</div>
+<br>
 <div id = "svg3">
     
      <div class="buttonList">
         <div id = "menu" class="menu"></div>
-        <button class = "button" onclick = "spring(indexChosen)" >Spring</button>
-        <button class = "button" onclick = "summer(indexChosen)" >Summer</button>
-        <button class = "button" onclick = "fall(indexChosen)" >Fall</button>
         <button class = "button" onclick = "winter(indexChosen)" >Winter</button>
+        <button class = "button" onclick = "fall(indexChosen)" >Fall</button>
+        <button class = "button" onclick = "summer(indexChosen)" >Summer</button>
+        <button class = "button" onclick = "spring(indexChosen)" >Spring</button>
     </div>
     <div class="clear"></div>
     <br> <br>
-    <p class = "center">The number of hate crime cases of &nbsp<span id = "seasonName" class="emphasize"></span>&nbsp is &nbsp<span id = "numberCases" class="emphasize"></span> , &nbspthe precentage for this choice to all hate crime cases in this region is &nbsp<span id = "precentage" class="emphasize"></span> &nbsp% </p>
-    <p class = "center">The most dangerous season for this region is &nbsp<span id = "dangerous" class="emphasize"></span> &nbsp </p>
+    <p class = "center" style = "font-size:18px">The number of hate crime cases of &nbsp<span id = "seasonName" class="emphasize" style = "font-size:18px"></span>&nbsp is &nbsp<span id = "numberCases" class="emphasize" style = "font-size:18px"></span> , &nbspthe precentage for this choice to all hate crime cases in this region is &nbsp<span id = "precentage" class="emphasize" style = "font-size:18px"></span> &nbsp% </p>
+    <p class = "center" style = "font-size:18px">The most dangerous season for this region is &nbsp<span id = "dangerous" class="emphasize" style = "font-size:18px"></span> &nbsp </p>
 <div id = "Season"></div>
 </div>
 <div id="footnotes">
@@ -313,7 +352,6 @@
         'Race','Religion','Sexual Orientation','Ethnicity','Disability','Gender'
     ];
     // importing data from the csv file
-    d3.csv("../data/alphabetized_data.csv", function(error, states) {
         d3.csv("../data/hate-crime.csv", function(error, states) {
             if (error) console.log(error);
             var state = d3.map();
@@ -420,8 +458,7 @@
                         };
                     });                 
             });
-        }); 
-    });               
+        });                
 </script>
 <script>
 var width = 1050;
@@ -519,6 +556,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
         console.log("The current cliked button's id is "+clickedID);
     	svg.selectAll("circle").remove();
     	displayLocations(rows, "Race", 40, toggleOn); 
+        document.getElementById("typeChosen").innerHTML = "Race";
     });
 
     d3.select("#religion").on("click", function(){ 
@@ -526,6 +564,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     	clickedID = this.id;
     	svg.selectAll("circle").remove();
     	displayLocations(rows, "Religion", 20, toggleOn);
+        document.getElementById("typeChosen").innerHTML = "Religion";
     });
 
     d3.select("#sex").on("click", function(){
@@ -533,6 +572,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     	clickedID = this.id;
         svg.selectAll("circle").remove();
         displayLocations(rows, "Sexual Orientation", 20, toggleOn);
+        document.getElementById("typeChosen").innerHTML = "Sexual Orientation";
     });
 
     d3.select("#ethnicity").on("click", function(){
@@ -540,6 +580,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     	clickedID = this.id;
         svg.selectAll("circle").remove();
         displayLocations(rows, "Ethnicity", 20, toggleOn);
+        document.getElementById("typeChosen").innerHTML = "Ethnicity";
     });
 
     d3.select("#disability").on("click", function(){
@@ -547,6 +588,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     	clickedID = this.id;
         svg.selectAll("circle").remove();
         displayLocations(rows, "Disability", 10, toggleOn);
+        document.getElementById("typeChosen").innerHTML = "Disability";
     });
 
     d3.select("#gender").on("click", function(){
@@ -554,6 +596,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     	clickedID = this.id;
         svg.selectAll("circle").remove();
         displayLocations(rows, "Gender", 10, toggleOn);
+        document.getElementById("typeChosen").innerHTML = "Gender";
     });
 });
 
@@ -1003,7 +1046,7 @@ function generateMapLegend(toggleOn){
                 svgSeason.append("text")
                 .attr("x", 0.5*(xScaleSeason("spring") + xScaleSeason("winter")))
                 .attr("y", 100)
-                .style("font-size", 20)
+                .style("font-size", "20px")
                 .attr("text-anchor", "middle")
                 .attr("base-alignment", "middle")
                 .attr("id", "location")
@@ -1021,39 +1064,39 @@ function generateMapLegend(toggleOn){
         
     //display all the elements, set hidden to the "flying" person
     for (var j = 0; j < 5; j++) {
-        ty = j * 150;
+        ty = j * 200;
 
         for (var i = 0; i < 10; i++) {
-            var tx = i * 110;
+            var tx = i * 130;
 
             //normal people head
             svgSeason.append("path")
             .attr("id","person0_"+ (j*10 +i))
-            .attr("transform","scale(0.25),translate(" + (tx + 320) + "," + (ty + 530) + ")")
+            .attr("transform","scale(0.25),translate(" + (tx + 230) + "," + (ty + 450) + ")")
             .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
             .attr("fill","none");
 
             //normal people body
             svgSeason.append("path")
             .attr("id","person1_"+ (j*10 +i))
-            .attr("transform","scale(0.25),translate(" + (tx + 320) + ","  + (ty + 530) + ")")
+            .attr("transform","scale(0.25),translate(" + (tx + 230) + ","  + (ty + 450) + ")")
             .attr("d","M57.778 128h12.445c5.4 0 9.778-4.378 9.778-9.778v-22.222h4.726c5.95 0 10.521-5.27 9.679-11.161l-5.206-36.444c-0.688-4.817-4.813-8.395-9.679-8.395h-31.040c-4.866 0-8.991 3.578-9.679 8.395l-5.206 36.444c-0.842 5.891 3.729 11.161 9.679 11.161h4.726v22.222c0 5.4 4.378 9.778 9.778 9.778z")
             .attr("fill","none");
                 
             //flying people head, set hidden default
             svgSeason.append("path")
             .attr("id","personChosen0_"+ (j*10 +i))
-            .attr("transform","scale(0.25),translate(" + (tx + 320) + "," + (ty + 530) + ")")
+            .attr("transform","scale(0.25),translate(" + (tx + 230) + "," + (ty + 450) + ")")
             .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
-            .attr("fill","#EBC844");
+            .attr("fill","#FFD700");
             //document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
 
             //flying people body, set hidden default
             svgSeason.append("path")
             .attr("id","personChosen1_"+ (j*10 +i))
-            .attr("transform","scale(0.25),translate(" + (tx + 320) + ","  + (ty + 530) + ")")
+            .attr("transform","scale(0.25),translate(" + (tx + 230) + ","  + (ty + 450) + ")")
             .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
-            .attr("fill","#EBC844");
+            .attr("fill","#FFD700");
 
             //document.getElementById("personChosen1_"+ (j*10 +i)).style.visibility = "hidden";
             document.getElementById("precentage").innerHTML = "29.7";
@@ -1081,9 +1124,9 @@ function generateMapLegend(toggleOn){
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen0_"+ i).style.fill = "#A2B86C";
+            document.getElementById("personChosen0_"+ i).style.fill = "#98FB98";
             document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen1_"+ i).style.fill = "#A2B86C";
+            document.getElementById("personChosen1_"+ i).style.fill = "#98FB98";
         }
         for (var i = number; i < 50; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
@@ -1113,9 +1156,9 @@ function generateMapLegend(toggleOn){
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen0_"+ i).style.fill = "#C02E1D";
+            document.getElementById("personChosen0_"+ i).style.fill = "#DC143C";
             document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen1_"+ i).style.fill = "#C02E1D";
+            document.getElementById("personChosen1_"+ i).style.fill = "#DC143C";
         }
         for (var i = number; i < 50; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
@@ -1146,9 +1189,9 @@ function generateMapLegend(toggleOn){
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen0_"+ i).style.fill = "#EBC844";
+            document.getElementById("personChosen0_"+ i).style.fill = "#FFD700";
             document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen1_"+ i).style.fill = "#EBC844";
+            document.getElementById("personChosen1_"+ i).style.fill = "#FFD700";
         }
         for (var i = number; i < 50; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
@@ -1179,9 +1222,9 @@ function generateMapLegend(toggleOn){
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen0_"+ i).style.fill = "#1395BA";
+            document.getElementById("personChosen0_"+ i).style.fill = "#B0E2FF";
             document.getElementById("personChosen1_"+ i).style.visibility = "visible";
-            document.getElementById("personChosen1_"+ i).style.fill = "#1395BA";
+            document.getElementById("personChosen1_"+ i).style.fill = "#B0E2FF";
         }
         for (var i = number; i < 50; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
