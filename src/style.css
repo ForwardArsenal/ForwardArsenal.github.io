@@ -106,8 +106,8 @@ input.cmn-toggle-round:checked + label:after {
 ============================================================ */
 input.cmn-toggle-round-flat + label { /* #dddddd */
   padding: 2px;
-  width: 95px;
-  height: 60px;
+  width: 120px;
+  height: 35px;
   background-color: #e7e7e7;
   -webkit-border-radius: 60px;
   -moz-border-radius: 60px;

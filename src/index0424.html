@@ -53,15 +53,14 @@
 </style>
 <style>
     /*  The map's style */
-    .panel { width:80%;padding-bottom: 65px; width: 1100px; height: 250px; /*margin-left: 100px; margin-top: 140px; margin-bottom: 0px; border: none;*/ margin-left:auto; margin-right:auto; display:block;}
+    .panel { width:80%; padding-bottom: 65px; width: 1100px; height: 250px; /*margin-left: 100px; margin-top: 140px; margin-bottom: 0px; border: none;*/ margin-left:auto; margin-right:auto; display:block;}
     .switch { 
     	height: 20px;
         margin-top: 0px;
-        float: left;
-        margin-right: 10px;
+        float: left;  
     }
     .toggle-text {
-/*    	font-family: "Comic Sans MS";*/
+    /* font-family: "Comic Sans MS";*/
         font-family: "Open Sans";
     	font-size: 15px;
         font-weight: bold;
@@ -83,9 +82,9 @@
         float: left;
         font-size: 20px;
     }
-    input.cmn-toggle-round-flat + label {
-    	width: 95px;
-        height: 25px;
+    input.cmn-toggle-round-flat + label {    
+    	width: 120px;
+        height: 35px;   
     }
     .arc text { font-family: "Comic Sans MS"; font-size: 5px; }
     .arc path { stroke: #fff; }
@@ -109,15 +108,15 @@
     .btn-primary { margin-left: 18px; padding-left: 10px; width: 140px; margin-top: 20px; }
     .panel-success { position: absolute; height: 410px; width: 225px; outline: 2px solid #c1c1c1; background-color: rgba(256,256,256,0.8);
     /*box-shadow: 5px 5px;*/}
-    .state-boundary { fill: #c1c1c1; stroke: #ffffff; stroke-width: 3px;}
+    .state-boundary { fill: #c1c1c1; stroke: #ffffff; stroke-width: 3px; opacity: 0.3; }
     .state-name { font-family:  "Open Sans"; fill: #000000; fill-opacity: .8; font-size: 10px; font-weight: 350; text-anchor: middle; }
     .location { fill: red; fill-opacity: .8; }
     .well { position: static; margin-top: 5px; margin-bottom: 5px; height: 140px; width: 180px; margin-left: 25px; padding-top: 0px; margin-right: 20px; padding-left: 10px; }
-    .well-text { /*font-family: "Comic Sans MS"; */font-family: "Open Sans";padding-top: 0px; color: black; font-size: 11px; line-height: 0%; white-space: nowrap; text-align: center; margin-left: 10px; text-align: center;}
+    .well-text { font-family: "Open Sans"; padding-top: 0px; color: black; font-size: 11px; line-height: 0%; white-space: nowrap; text-align: center; margin-left: 10px; padding-left: 13px; }
     .donutChart { margin-top: 0px; padding-top: 0px; margin-bottom: 0px; }
     .legend { margin-left: 10px; margin-top: 10px; margin-bottom: 10px;}
     .legendText { text-anchor: middle; font-size: 11px; }
-    .donutChartLegendText { font-size: 6px; text-anchor: middle; }
+    .donutChartLegendText { font-size: 8px; text-anchor: middle; }
     .donutChartLegendRect { width: 40px; height: 10px; }
     .mapLegendRect { width: 50px; height: 10px; }
     .mapButton {
@@ -476,20 +475,17 @@ var svg = d3.select("#map").append("svg")
     .style("margin-left", "60px")
     .style("margin-top", "0px");
 
-
-
 var states;
 d3.json("../data/us.json", function(error, shapes){
 	if(error){ console.log(error); }
     states = topojson.feature(shapes, shapes.objects.states).features;
     var statePaths = svg.append("g");
+    //draw teh outline of teh map
     statePaths.selectAll("path").data(states).enter()
     .append("path")
     .attr("d", path)
-    .attr("class", "state-boundary")
-    .style("fill","#c1c1c1")
-    .style("opacity",0.3);
-    
+    .attr("class", "state-boundary");
+
     d3.tsv("../data/us-state-names.tsv", function(rows){
     	var names = {};
     	rows.forEach(function(d, i){
@@ -510,11 +506,15 @@ d3.json("../data/us.json", function(error, shapes){
     	
     });
 });
-
+/* map locations */
 d3.csv("../data/hate-crime.csv", function(error, rows){
 	var toggleOn = false;
 	if(error){ console.log(error); }
 	rows = rows.filter(function(d){ return d["Agency Name"]!="USA"; });
+    //thanks to an aggregation of third-party css classes coded by someone else that 
+    //enabled the drawing of a round-flat toggle switch in this project, attached in the 
+    //src folder with the name of "style.css" 
+    //implement the logic corresponding to toggle behaviors
 	var toggle = d3.select("#toggle").on("change", function(d){
 	    if(d3.select(this).node().value == "false"){
 		    d3.select(this).node().value = "true";
@@ -549,7 +549,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
         	}
         }
     });
-    //race 30 disability 10 gender 4 gender identity 10 religion 20
+    //register listeners on different buttons
     d3.select("#race").on("click", function(){
     	generateMapLegend(toggleOn);
         clickedID = this.id;
@@ -599,7 +599,7 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
         document.getElementById("typeChosen").innerHTML = "Gender";
     });
 });
-
+/* deals with the logic to show location dots on the map */
 function displayLocations(rows, crimeType, topNum, toggleOn){
     var arr = [];
     var numbers = [];
@@ -675,10 +675,10 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
             }
         }
     }
+    //the color scale is used to scale the number or ratio of criminal events happened in each city
     var colorScale = d3.scale.linear()
     .domain(input)
     .range([ "#F7FE2E", "#fed976", "#feb24c", "#FE642E", "#FE2E2E", "#bd0026" ]);
-    //original "#F5D0A9", "#FAAC58", "#FF8000", "#DF7401", "#FE2E2E", "#DF0101"
     //add longitude and latitude to every city in the filtered array
     d3.csv("../data/us-cities.csv", function(error, cities){
         if(error){ console.log(error); }
@@ -750,7 +750,7 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
 }
 
 function displayDonutChart(ratios){
-
+    //inspired by Mike Bostock's example of making donut chart
 	var crimes = ["Race", "Religion", "Ethnicity", "Disability", "Gender", "Sexual Orientation"];
 	var dheight = 150;
 	var dwidth = 220;
@@ -813,8 +813,8 @@ function displayDonutChart(ratios){
      .style("text-anchor", "middle")
      .style("fill", "black");
 }
+
 function generateDonutChartLegend(svg){
-	//"#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"
 	var textInfo = [{ x: 20, y: 8, text: "Race" }, { x: 145, y: 8, text: "Religion" }, { x: 25, y: 42, text: "Ethnicity" }, 
 	{ x: 145, y: 42, text: "Disability" }, { x: 20, y: 76, text: "Gender" }, { x: 135, y: 76, text: "Sexual Orientation"}];
 
@@ -839,7 +839,6 @@ function generateDonutChartLegend(svg){
 
 function generateMapLegend(toggleOn){
 	d3.selectAll(".legendText").remove();
-    //"#F7FE2E", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026"
     var rectInfo = [{ x: 610, y: 0, color: "#F7FE2E"}, { x: 680, y: 0, color: "#fed976" }, { x: 750, y: 0, color: "#feb24c" }, 
     { x: 820, y: 0, color: "#FE642E" }, { x: 890, y: 0, color: "#FE2E2E" }, { x: 960, y: 0, color: "#bd0026" }];
 
