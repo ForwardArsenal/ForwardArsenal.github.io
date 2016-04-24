@@ -5,7 +5,6 @@
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="font-awesome.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <style>
    /* The overview's style */
@@ -84,7 +83,7 @@
     .btn-text { /*font-family: "Comic Sans MS";*/ font-family: "Open Sans";white-space: nowrap; }
     .panel-body { margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; border: none;}
     .btn-primary { margin-left: 18px; padding-left: 10px; width: 140px; margin-top: 20px; }
-    .panel-success { position: absolute; height: 430px; width: 225px; outline: 1px solid gray; /*box-shadow: 5px 5px;*/}
+    .panel-success { position: absolute; height: 440px; width: 225px; outline: 5px solid #feb24c; /*box-shadow: 5px 5px;*/}
     .state-boundary { fill: #c1c1c1; stroke: #ffffff; stroke-width: 3px;}
     .state-name { font-family:  "Open Sans"; fill: #000000; fill-opacity: .8; font-size: 10px; font-weight: 350; text-anchor: middle; }
     .location { fill: red; fill-opacity: .8; }
@@ -760,6 +759,8 @@ function displayDonutChart(ratios){
      .attr("transform", function(d){ return "translate("+arc.centroid(d)+")"; })
      .attr("dx", ".5em")
      .attr("dy", ".5em")
+     .style("stroke", "white")
+     .style("font-size", "8px")
      .text(function(d){ 
      	if(d.data["ratio"]!=0.0){
      	    return (d.data["ratio"]*100).toFixed(1)+"%";
