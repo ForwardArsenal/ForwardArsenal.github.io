@@ -53,7 +53,7 @@
 </style>
 <style>
     /*  The map's style */
-    .panel { width:80%; padding-bottom: 65px; width: 1100px; height: 250px; /*margin-left: 100px; margin-top: 140px; margin-bottom: 0px; border: none;*/ margin-left:auto; margin-right:auto; display:block;}
+    .panel { width:80%; padding-bottom: 65px; width: 1100px; height: 250px;  margin-left:auto; margin-right:auto; display:block;}
     .switch { 
     	height: 24px;
         margin-top: 0px;
@@ -107,7 +107,7 @@
     .heading-text { /*font-family: "Comic Sans MS";*/ font-family: "Open Sans";text-align: center; padding-top: 17px; font-size: 2em; }
     .info-heading { height: 60px; width: 180px; margin-left: 24px; margin-bottom: 0px; }
     .btn-text { /*font-family: "Comic Sans MS";*/ font-family: "Open Sans";white-space: nowrap; }
-    .panel-body { /*margin-left: 10px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; border: none;*/margin-left:auto; margin-right:auto; display:block;}
+    .panel-body { /*margin-left: 0px; margin-right: 10px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px; border: none;*/margin-left:auto; margin-right:auto; display:block;}
     .btn-primary { margin-left: 18px; padding-left: 10px; width: 140px; margin-top: 20px; }
     .panel-success { position: absolute; height: 410px; width: 225px; outline: 2px solid #c1c1c1; background-color: rgba(256,256,256,0.8); pointer-events: none;
     /*box-shadow: 5px 5px;*/}
@@ -141,7 +141,8 @@
         cursor: pointer;
         border-radius: 8px;
         margin-left: 18px;
-        margin-top: 10px; 
+        margin-top: 10px;
+        float:left; 
     }
     .mapButton:hover {
         background-color: #e7e7e7; 
@@ -306,15 +307,14 @@
     <br>
 
 <div id="panel" class="panel">
-	<div class="panel-heading heading-text" style= "Roboto Slab">Select a Crime Type to Display</div>
-    <div class="panel-body">    	
-    	<button id="gender" type="button" class="mapButton btn-text">Gender</button>
+	<div class="panel-heading heading-text" style= "font-family:Roboto Slab">Select a Crime Type to Display</div>
+    <div class="panel-body"> 
+        <button id="race" type="button" class="mapButton btn-text">Race</button> 
+        <button id="religion" type="button" class="mapButton btn-text">Religion</button> 
+        <button id="sex" type="button" class="mapButton btn-text">Sexual Orientation</button> 
+        <button id="ethnicity" type="button" class="mapButton btn-text">Ethnicity</button>	
         <button id="disability" type="button" class="mapButton btn-text">Disability</button> 
-        <button id="ethnicity" type="button" class="mapButton btn-text">Ethnicity</button>
-        <button id="sex" type="button" class="mapButton btn-text">Sexual Orientation</button>
-        <button id="religion" type="button" class="mapButton btn-text">Religion</button>
-        <button id="race" type="button" class="mapButton btn-text">Race</button>
-
+    	<button id="gender" type="button" class="mapButton btn-text">Gender</button>
     </div>
 
     <div class = "svg2">
