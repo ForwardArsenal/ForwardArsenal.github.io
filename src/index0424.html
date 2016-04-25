@@ -573,6 +573,13 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
         	}
         }
     });
+    //display the text about the usage of the toggle switch
+    svg.append("text")
+    .attr("x", 200)
+    .attr("y", 6)
+    .style("text-anchor", "middle")
+    .style("font-size", "8px")
+    .text("*Toggle scales by population, reporting crimes per 10,000 people.");
     //register listeners on different buttons
     d3.select("#race").on("click", function(){
     	generateMapLegend(toggleOn);
@@ -730,21 +737,23 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
         	    return colorScale(d.crime);
         	} 
         })
+        .attr("stroke", "black")
         .on("mouseover", function(d){
         	var panel = d3.select("#info")
         	.style("visibility", "visible");
-            var panelHeight = 430;
+            
             var x = d3.mouse(svg.node())[0];
             var y = d3.mouse(svg.node())[1];
-            if(y+panelHeight<=height){
-            	panel.style("left", (d3.event.pageX-87)+"px")
-                .style("top", (d3.event.pageY-350)+"px");
+           
+            if(y>=316){
+                panel.style("left", (d3.event.pageX-87)+"px")
+                .style("top", (d3.event.pageY-420)+"px");
             }
             else{
-            	panel.style("left", (d3.event.pageX-87)+"px")
-                .style("top", (d3.event.pageY-380)+"px");
+                panel.style("left", (d3.event.pageX-87)+"px")
+                .style("top", (d3.event.pageY-180)+"px");
             }
-
+            
         	d3.select("#city")
             .html("City: "+d.city);
         	
@@ -829,9 +838,10 @@ function displayDonutChart(ratios){
      .attr("dy", ".5em")
      .style("stroke", "white")
      .style("font-size", "8px")
-     .text(function(d){ 
-     	if(d.data["ratio"]!=0.0){
-     	    return (d.data["ratio"]*100).toFixed(1)+"%";
+     .text(function(d){
+        var tmp = Number((d.data["ratio"]*100).toFixed(1));
+     	if(tmp!=0.0 && tmp>=6.0){
+     	    return tmp+"%";
      	} 
      })
      .style("font-size", "-10")
@@ -900,12 +910,6 @@ function generateMapLegend(toggleOn){
         .text(function(d){ return d.text; });
         
     }
-    svg.append("text")
-    .attr("x", 860)
-    .attr("y", 48)
-    .style("text-anchor", "middle")
-    .style("font-size", "8px")
-    .text("*Toggle scales by population, reporting crimes per 10,000 people.");
 }
 </script>
 <script type="text/javascript">
