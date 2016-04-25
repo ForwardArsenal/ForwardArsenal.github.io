@@ -324,12 +324,11 @@
     <div class = "svg2">
     <br>
     <div class="switch" >
-        <input id="toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" value="false">
+        <input id="toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" value="true">
         <label for="toggle"></label>
     </div>
-    <p id = "Ratio">Ratio</p> 
-    <p id = "TypeChosen">Here are the information about <span id = "typeChosen"  style = "color: red;
-        font-weight: bold; font-size:20px" ></span>&nbspHate Crime.</p>
+    <p id ="Ratio">Ratio</p> 
+    <p id ="TypeChosen">Here are the information about <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span>&nbspHate Crime.</p>
     </div>   
 </div>
 <div id="map"></div>
@@ -532,7 +531,7 @@ d3.json("../data/us.json", function(error, shapes){
 });
 /* map locations */
 d3.csv("../data/hate-crime.csv", function(error, rows){
-	var toggleOn = false;
+	var toggleOn = true;
 	if(error){ console.log(error); }
 	rows = rows.filter(function(d){ return d["Agency Name"]!="USA"; });
     //thanks to an aggregation of third-party css classes coded by someone else that 
@@ -584,7 +583,6 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     d3.select("#race").on("click", function(){
     	generateMapLegend(toggleOn);
         clickedID = this.id;
-        console.log("The current cliked button's id is "+clickedID);
     	svg.selectAll("circle").remove();
     	displayLocations(rows, "Race", 40, toggleOn); 
         document.getElementById("typeChosen").innerHTML = "Race";
