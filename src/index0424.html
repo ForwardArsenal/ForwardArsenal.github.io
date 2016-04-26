@@ -26,6 +26,20 @@
         font-weight: bold;
         font-size:15px;
     }
+
+    div.tooltip {   
+        position: absolute;           
+        text-align: center;           
+        width: auto;                  
+        height: auto;                 
+        padding: 2px;             
+        font: 12px sans-serif;        
+        background: lightsteelblue;   
+        border: 0px;      
+        border-radius: 8px;           
+        pointer-events: none;         
+    }
+
     .svg1 {
         width: 75%;
         /*margin: 0 auto;*/
@@ -60,7 +74,7 @@
     	height: 24px;
         margin-top: 0px;
         float: left; 
-        margin-right: 20px; 
+        margin-right: 50px; 
     }
     .toggle-text {
     /* font-family: "Comic Sans MS";*/
@@ -263,8 +277,9 @@
 
     .dividingLine{
     height:2px;
-    width:80%;
+    width:90%;
     background-color:gray;
+    opacity: 0.5;
     margin: 0 auto;
     margin-top:10px;
     margin-bottom:10px;
@@ -303,12 +318,16 @@
     <br><br><br><br>
     Although we often like to think of the US as a place of acceptance, hate crimes and bias incidents are still unfortunately prevalent.  In 2013, there were <span class="emphasize"> 6,921 hate crimes </span> reported to the FBI.  These crimes were perpetrated and recorded on the basis of race, ethnicity, religion, gender and gender identity, disability and sexual-orientation.
     <br><br>
-    These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The adjacent pie chart shows breakdown by motivation, the map illustrates the worst offending cities by type, with the graphic below showing seasonal variation in crime volume.
+    These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The various motivations are recorded when incidents target a person or group for specific characteristics.  For example, a religious hate crime is reported when a crime is carried out because the offending party is targeting people or persons of a specific religion, because of the victim's religion.
 </div>
 <div id="right"></div>
 </div>
 
 <div class="clear"></div>
+<br>
+<br>
+<div class = "dividingLine"></div>
+    <br>
     <br>
 
 <div id="panel" class="panel1">
@@ -328,8 +347,8 @@
         <input id="toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" value="true">
         <label for="toggle"></label>
     </div>
-    <p id ="Ratio">Absolute Number</p> 
-    <p id ="TypeChosen">Here are the information about <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span>&nbspHate Crime.</p>
+   <!--  <p id ="Ratio">Absolute Number</p>  -->
+    <p id ="TypeChosen">Cities with the highest number of crimes motivated by <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span></p>
     </div>   
 </div>
 <div id="map"></div>
@@ -343,6 +362,11 @@
         </div>
     <!-- </div> -->
 </div>
+
+<br>
+<br>
+<div class = "dividingLine"></div>
+<br>
 <br>
 <div class="panel-heading heading-text" style= "Roboto Slab">Hate Crime and Season</div>
 <br>
@@ -357,13 +381,13 @@
     </div>
     <div class="clear"></div>
     <br> <br>
-    <p class = "center" style = "font-size:18px">The number of hate crime cases of &nbsp<span id = "seasonName" class="emphasize" style = "font-size:18px"></span>&nbsp is &nbsp<span id = "numberCases" class="emphasize" style = "font-size:18px"></span> , &nbspthe precentage for this choice to all hate crime cases in this region is &nbsp<span id = "precentage" class="emphasize" style = "font-size:18px"></span> &nbsp% </p>
-    <p class = "center" style = "font-size:18px">The most dangerous season for this region is &nbsp<span id = "dangerous" class="emphasize" style = "font-size:18px"></span> &nbsp </p>
+    <p class = "center" style = "font-size:18px">The number of hate crime cases in &nbsp<span id = "seasonName" class="emphasize" style = "font-size:18px"></span>&nbsp: &nbsp<span id = "numberCases" class="emphasize" style = "font-size:18px"></span>. The motivation accounts for &nbsp<span id = "precentage" class="emphasize" style = "font-size:18px"></span>&nbsp% of all hate crimes in this region. </p>
+    <p class = "center" style = "font-size:18px">The most dangerous season for this region is &nbsp<span id = "dangerous" class="emphasize" style = "font-size:18px"></span> &nbsp</p>
 <div id = "Season"></div>
 </div>
 <div id="footnotes">
     <p>
-        *data from the <a href="https://www.fbi.gov/about-us/cjis/ucr/hate-crime/2013/topic-pages/incidents-and-offenses/incidentsandoffenses_final">2013 FBI hate crimes statistics report. Gender represented both gender and gender-identity motivated hate crimes. Cities not available in dropdown menus did not have significant numbers of reported hate crimes.</a>
+        *data from the <a href="https://www.fbi.gov/about-us/cjis/ucr/hate-crime/2013/topic-pages/incidents-and-offenses/incidentsandoffenses_final">2013 FBI hate crimes statistics report.</a> Gender represented both gender and gender-identity motivated hate crimes. Cities not available in dropdown menus did not have significant numbers of reported hate crimes.
     </p>
 </div>
 <script>
@@ -374,13 +398,17 @@
         'Race','Religion','Sexual Orientation','Ethnicity','Disability','Gender'
     ];
     // importing data from the csv file
+        var part1Data = [];
         d3.csv("../data/hate-crime.csv", function(error, states) {
             if (error) console.log(error);
             var state = d3.map();
             states.forEach(function(d) { state.set(d["Agency Name"], d); });
             dispatch.load(state);
             dispatch.statechange(state.get("USA"));
+            //part1Data = state.values();            
         });
+        //console.log(part1Data);
+
         // builds the drop down menu
         dispatch.on("load.menu", function(state) {
             var select = d3.select("#right")
@@ -427,9 +455,28 @@
                 .append("g")
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+            var tooltip = d3.select("body").append("div")   
+                .attr("class", "tooltip")               
+                .style("opacity", 0);
+
+            //tooltip advice from this jsfiddle: http://jsfiddle.net/WLYUY/5/
             var path = svg.selectAll("path")
                 .data(groups)
-                .enter().append("path")
+                .enter().append("path").attr("class", "slice")
+                // .on("mouseover", function(d) {console.log(d.data + ", " + d.value); return d;})
+                .on("mouseover", function(d) {      
+                    tooltip.transition().duration(200).style("opacity", .9);      
+                    tooltip.html(d.data + ", " + d.value)  
+                      .style("left", (d3.event.pageX) + "px")     
+                      .style("top", (d3.event.pageY) + "px")
+                      .style("background-color", "#e7e7e7")
+                      .style("opacity", 0.8);   
+
+                      console.log(d.data); 
+                  })                  
+                  .on("mouseout", function(d) {       
+                    tooltip.transition().duration(500).style("opacity", 0);   
+                  })
                 .style("fill", color)
                 .each(function() { this._current = {startAngle: 0, endAngle: 0}; });
 
@@ -526,8 +573,14 @@ d3.json("../data/us.json", function(error, shapes){
     	.attr("x", function(d){ return path.centroid(d)[0]; })
     	.attr("y", function(d){ return path.centroid(d)[1]; })
     	.attr("class", "state-name")
+        .attr("id", function(d) {return names[d.id]; })
     	.text(function(d){ return names[d.id]; });
-    	
+
+       document.getElementById("Vermont").setAttribute("y", 132);
+       document.getElementById("Connecticut").setAttribute("y", 192);
+       document.getElementById("New Jersey").setAttribute("x", 892);
+       document.getElementById("Delaware").setAttribute("y", 250);
+       document.getElementById("District of Columbia").setAttribute("y", 269);
     });
 });
 /* map locations */
@@ -575,11 +628,10 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     });
     //display the text about the usage of the toggle switch
     svg.append("text")
-    .attr("x", 200)
+    .attr("x", 10)
     .attr("y", 8)
-    .style("text-anchor", "middle")
-    .style("font-size", "10px")
-    .text("* Default toggle scales by population, reporting crimes per 10,000 people.");
+    .style("font-size", "10.5px")
+    .text("* Default toggle scales by population, reporting crimes per 10,000 people. Toggle on to see absolute Number of hate crime cases.");
     //register listeners on different buttons
     d3.select("#race").on("click", function(){
     	generateMapLegend(toggleOn);
@@ -1195,7 +1247,6 @@ function generateMapLegend(toggleOn){
         .attr("cy", yScaleSeason(data[n].spring))
         .attr("id", "circle")
         .attr("fill", "orange");
-         console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -1236,8 +1287,7 @@ function generateMapLegend(toggleOn){
             number = Math.round(data[n]["summer"] / 50);
         }
         percent = d3.format(".1f")(data[n]["summer"] / data[n]["total"] * 100);
-        console.log("number for this season is" + number);
-
+        
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
             document.getElementById("personChosen0_"+ i).style.fill = "#DC143C";
@@ -1396,7 +1446,7 @@ function generateMapLegend(toggleOn){
     svgSeason.append("text")
     .attr("x",700)
     .attr("y",36)
-    .text("number of hate crime cases in cities among USA");
+    .text("number of hate crime cases in non-selected cities");
 
     svgSeason.append("line")
     .attr("x1",650)
@@ -1421,16 +1471,7 @@ function generateMapLegend(toggleOn){
     .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
     .attr("fill","none");
 
-    
-    
-    // svgSeason.append("text")
-    //     .attr("x",700)
-    //     .attr("y",62)
-    //     .text("default colored people stands for the season which has largest");
-    // svgSeason.append("text")
-    //     .attr("x",700)
-    //     .attr("y",75)
-    //     .text("number of hate crime cases");
+
 
 </script>
 </body>
