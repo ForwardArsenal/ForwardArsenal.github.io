@@ -342,7 +342,7 @@
         <label for="toggle"></label>
     </div>
     <p id ="Ratio">Ratio</p> 
-    <p id ="TypeChosen">Here are the information about <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span>&nbspHate Crime.</p>
+    <p id ="TypeChosen">Cities with the highest number of crimes motivated by: <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span>.</p>
     </div>   
 </div>
 <div id="map"></div>
@@ -370,13 +370,13 @@
     </div>
     <div class="clear"></div>
     <br> <br>
-    <p class = "center" style = "font-size:18px">The number of hate crime cases of &nbsp<span id = "seasonName" class="emphasize" style = "font-size:18px"></span>&nbsp is &nbsp<span id = "numberCases" class="emphasize" style = "font-size:18px"></span> , &nbspthe precentage for this choice to all hate crime cases in this region is &nbsp<span id = "precentage" class="emphasize" style = "font-size:18px"></span> &nbsp% </p>
+    <p class = "center" style = "font-size:18px">The number of hate crime cases in &nbsp<span id = "seasonName" class="emphasize" style = "font-size:18px"></span>&nbsp: &nbsp<span id = "numberCases" class="emphasize" style = "font-size:18px"></span>. The motivation accounts for &nbsp<span id = "precentage" class="emphasize" style = "font-size:18px"></span>&nbsp% of all hate crimes in this region. </p>
     <p class = "center" style = "font-size:18px">The most dangerous season for this region is &nbsp<span id = "dangerous" class="emphasize" style = "font-size:18px"></span> &nbsp </p>
 <div id = "Season"></div>
 </div>
 <div id="footnotes">
     <p>
-        *data from the <a href="https://www.fbi.gov/about-us/cjis/ucr/hate-crime/2013/topic-pages/incidents-and-offenses/incidentsandoffenses_final">2013 FBI hate crimes statistics report. Gender represented both gender and gender-identity motivated hate crimes. Cities not available in dropdown menus did not have significant numbers of reported hate crimes.</a>
+        *data from the <a href="https://www.fbi.gov/about-us/cjis/ucr/hate-crime/2013/topic-pages/incidents-and-offenses/incidentsandoffenses_final">2013 FBI hate crimes statistics report.</a> Gender represented both gender and gender-identity motivated hate crimes. Cities not available in dropdown menus did not have significant numbers of reported hate crimes.
     </p>
 </div>
 <script>
@@ -1346,7 +1346,7 @@ function generateMapLegend(toggleOn){
     svgSeason.append("text")
     .attr("x",700)
     .attr("y",36)
-    .text("number of hate crime cases in cities among USA");
+    .text("number of hate crime cases in non-selected cities");
 
     svgSeason.append("line")
     .attr("x1",650)
