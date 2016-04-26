@@ -762,7 +762,8 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
     var colorScale = d3.scale.linear()
     .domain(input)
     // .range([ "#F7FE2E", "#fed976", "#feb24c", "#FE642E", "#FE2E2E", "#bd0026" ]);
-    .range([ "#f7f4f9", "#d4b9da", "#df65b0", "#e7298a", "#ce1256", "#91003f" ]);
+    // .range([ "#f7f4f9", "#d4b9da", "#df65b0", "#e7298a", "#ce1256", "#91003f" ]);
+    .range([ "#fee0d2", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
     //add longitude and latitude to every city in the filtered array
     d3.csv("../data/us-cities.csv", function(error, cities){
         if(error){ console.log(error); }
@@ -931,8 +932,9 @@ function generateMapLegend(toggleOn){
     // add longitude and latitude to every city in the filtered array
     // var rectInfo = [{ x: 610, y: 0, color: "#F7FE2E"}, { x: 680, y: 0, color: "#fed976" }, { x: 750, y: 0, color: "#feb24c" }, 
     // { x: 820, y: 0, color: "#FE642E" }, { x: 890, y: 0, color: "#FE2E2E" }, { x: 960, y: 0, color: "#bd0026" }];
-    var rectInfo = [{ x: 610, y: 0, color: "#f7f4f9"}, { x: 680, y: 0, color: "#d4b9da" }, { x: 750, y: 0, color: "#e7298a" }, 
-    { x: 820, y: 0, color: "#e7298a" }, { x: 890, y: 0, color: "#ce1256" }, { x: 960, y: 0, color: "#91003f" }];
+    //.range([ "#fee0d2", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
+    var rectInfo = [{ x: 610, y: 0, color: "#fee0d2"}, { x: 680, y: 0, color: "#fb6a4a" }, { x: 750, y: 0, color: "#ef3b2c" }, 
+    { x: 820, y: 0, color: "#cb181d" }, { x: 890, y: 0, color: "#a50f15" }, { x: 960, y: 0, color: "#67000d" }];
 
     var toggleOffTextInfo = [{ x: 635, y: 30, text: "0~25" }, { x: 705, y: 30, text: "25~50" }, { x: 775, y: 30, text: "50~75" }, 
     { x: 845, y: 30, text: "75~100" }, { x: 915, y: 30, text: "100~125" }, { x: 985, y: 30, text: "125~152" }];
