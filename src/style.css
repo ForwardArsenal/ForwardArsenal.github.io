@@ -170,7 +170,7 @@ input.cmn-toggle-round-flat:checked + label { /*#8ce196*/
 }
 input.cmn-toggle-round-flat:checked + label:after {
   margin-left: 50px;
-  background-color: #e7298a;
+  background-color: #fb6a4a;
   opacity: 0.7;
 }
 
