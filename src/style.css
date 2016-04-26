@@ -27,6 +27,7 @@
 /* ============================================================
   COMMON
 ============================================================ */
+
 .cmn-toggle {
   position: absolute;
   margin-left: -9999px;
@@ -43,9 +44,11 @@
   user-select: none;
 }
 
+
 /* ============================================================
   SWITCH 1 - ROUND
 ============================================================ */
+
 input.cmn-toggle-round + label {
   padding: 2px;
   width: 80px;
@@ -101,6 +104,7 @@ input.cmn-toggle-round:checked + label:after {
   margin-left: 60px;
 }
 
+
 /* ============================================================
   SWITCH 2 - ROUND FLAT
 ============================================================ */
@@ -144,12 +148,13 @@ input.cmn-toggle-round-flat + label:before { /* #fff */
   -o-transition: background 0.4s;
   transition: background 0.4s;
 }
-input.cmn-toggle-round-flat + label:after { /* #dddddd */
+input.cmn-toggle-round-flat + label:after { /* #dddddd  #feb24c; */
   top: 4px;
   left: 4px;
   bottom: 4px;
   width: 35px;
   background-color: #c1c1c1;
+
   -webkit-border-radius: 52px;
   -moz-border-radius: 52px;
   -ms-border-radius: 52px;
@@ -165,12 +170,14 @@ input.cmn-toggle-round-flat:checked + label { /*#8ce196*/
 }
 input.cmn-toggle-round-flat:checked + label:after {
   margin-left: 50px;
-  background-color: #feb24c;
+  background-color: #e7298a;
+  opacity: 0.7;
 }
 
 /* ============================================================
   SWITCH 3 - YES NO
 ============================================================ */
+
 input.cmn-toggle-yes-no + label {
   padding: 2px;
   width: 120px;
@@ -234,3 +241,6 @@ input.cmn-toggle-yes-no:checked + label:after {
   -o-transform: rotateY(0);
   transform: rotateY(0);
 }
+
+
+

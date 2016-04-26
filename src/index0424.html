@@ -8,6 +8,7 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+<!-- @@@ -->
 <style>
    /* The overview's style */
     body { font-family: "Roboto Slab"; color: #333;}
@@ -327,7 +328,7 @@
         <input id="toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" value="true">
         <label for="toggle"></label>
     </div>
-    <p id ="Ratio">Ratio</p> 
+    <p id ="Ratio">Absolute Number</p> 
     <p id ="TypeChosen">Here are the information about <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span>&nbspHate Crime.</p>
     </div>   
 </div>
@@ -575,10 +576,10 @@ d3.csv("../data/hate-crime.csv", function(error, rows){
     //display the text about the usage of the toggle switch
     svg.append("text")
     .attr("x", 200)
-    .attr("y", 6)
+    .attr("y", 8)
     .style("text-anchor", "middle")
-    .style("font-size", "8px")
-    .text("*Toggle scales by population, reporting crimes per 10,000 people.");
+    .style("font-size", "10px")
+    .text("* Default toggle scales by population, reporting crimes per 10,000 people.");
     //register listeners on different buttons
     d3.select("#race").on("click", function(){
     	generateMapLegend(toggleOn);
@@ -707,7 +708,8 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
     //the color scale is used to scale the number or ratio of criminal events happened in each city
     var colorScale = d3.scale.linear()
     .domain(input)
-    .range([ "#F7FE2E", "#fed976", "#feb24c", "#FE642E", "#FE2E2E", "#bd0026" ]);
+    // .range([ "#F7FE2E", "#fed976", "#feb24c", "#FE642E", "#FE2E2E", "#bd0026" ]);
+    .range([ "#f7f4f9", "#d4b9da", "#df65b0", "#e7298a", "#ce1256", "#91003f" ]);
     //add longitude and latitude to every city in the filtered array
     d3.csv("../data/us-cities.csv", function(error, cities){
         if(error){ console.log(error); }
@@ -726,7 +728,7 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
         .append("circle")
         .attr("transform", function(d){ return "translate("+projection([d.longitude, d.latitude])+")"; })
         .attr("r", 7)
-        .attr("opacity", 0.8)
+        .attr("opacity", 0.9)
         .style("fill", function(d){
         	if(toggleOn == true){
         		return colorScale(d.crime*10000);
@@ -735,7 +737,7 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
         	    return colorScale(d.crime);
         	} 
         })
-        .attr("stroke", "black")
+        .attr("stroke", "#91003f")
         .on("mouseover", function(d){
         	var panel = d3.select("#info")
         	.style("visibility", "visible");
@@ -872,8 +874,12 @@ function generateDonutChartLegend(svg){
 
 function generateMapLegend(toggleOn){
 	d3.selectAll(".legendText").remove();
-    var rectInfo = [{ x: 610, y: 0, color: "#F7FE2E"}, { x: 680, y: 0, color: "#fed976" }, { x: 750, y: 0, color: "#feb24c" }, 
-    { x: 820, y: 0, color: "#FE642E" }, { x: 890, y: 0, color: "#FE2E2E" }, { x: 960, y: 0, color: "#bd0026" }];
+    // .range([ "#f7f4f9", "#d4b9da", "#df65b0", "#e7298a", "#ce1256", "#91003f" ]);
+    // add longitude and latitude to every city in the filtered array
+    // var rectInfo = [{ x: 610, y: 0, color: "#F7FE2E"}, { x: 680, y: 0, color: "#fed976" }, { x: 750, y: 0, color: "#feb24c" }, 
+    // { x: 820, y: 0, color: "#FE642E" }, { x: 890, y: 0, color: "#FE2E2E" }, { x: 960, y: 0, color: "#bd0026" }];
+    var rectInfo = [{ x: 610, y: 0, color: "#f7f4f9"}, { x: 680, y: 0, color: "#d4b9da" }, { x: 750, y: 0, color: "#e7298a" }, 
+    { x: 820, y: 0, color: "#e7298a" }, { x: 890, y: 0, color: "#ce1256" }, { x: 960, y: 0, color: "#91003f" }];
 
     var toggleOffTextInfo = [{ x: 635, y: 30, text: "0~25" }, { x: 705, y: 30, text: "25~50" }, { x: 775, y: 30, text: "50~75" }, 
     { x: 845, y: 30, text: "75~100" }, { x: 915, y: 30, text: "100~125" }, { x: 985, y: 30, text: "125~152" }];
@@ -971,6 +977,10 @@ function generateMapLegend(toggleOn){
                 document.getElementById("circle").remove();
             }
 
+            if (document.getElementById("personLegend") != null) {
+                document.getElementById("personLegend").remove();
+            }
+
             //display flying people for different options
             for (var i = 0; i < 50; i++) {
                 document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
@@ -999,6 +1009,26 @@ function generateMapLegend(toggleOn){
             .duration(1500)
             .ease("linear")
             .attr("stroke-dashoffset", 0);
+
+            if (indexChosen == 0) {
+                svgSeason.append("text")
+                .attr("id", "personLegend")
+                .attr("x",280)
+                .attr("y",36)
+                .text(" =  50 hate crime cases");
+            } else if (indexChosen == 5 || indexChosen == 13 || indexChosen == 50) {
+                svgSeason.append("text")
+                .attr("id", "personLegend")
+                .attr("x",280)
+                .attr("y",36)
+                .text(" =  2 hate crime cases");
+            } else {
+                svgSeason.append("text")
+                .attr("id", "personLegend")
+                .attr("x",280)
+                .attr("y",36)
+                .text(" =  1 hate crime cases");
+            }
 
             //display most dangerous season
             var dangerousSeason = "";
@@ -1086,6 +1116,13 @@ function generateMapLegend(toggleOn){
                 .attr("opacity",0.2);
             });
         }
+        //default show fall of USA
+        fall(0);
+        svgSeason.append("text")
+        .attr("id", "personLegend")
+        .attr("x",280)
+        .attr("y",36)
+        .text(" = 50 hate crime cases");
     });
         
     //display all the elements, set hidden to the "flying" person
@@ -1114,23 +1151,25 @@ function generateMapLegend(toggleOn){
             .attr("id","personChosen0_"+ (j*10 +i))
             .attr("transform","scale(0.25),translate(" + (tx + 230) + "," + (ty + 450) + ")")
             .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
-            .attr("fill","#FFD700");
-            //document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
+            .attr("fill","none");
+
+            document.getElementById("personChosen0_"+ (j*10 +i)).style.visibility = "hidden";
 
             //flying people body, set hidden default
             svgSeason.append("path")
             .attr("id","personChosen1_"+ (j*10 +i))
             .attr("transform","scale(0.25),translate(" + (tx + 230) + ","  + (ty + 450) + ")")
             .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
-            .attr("fill","#FFD700");
+            .attr("fill","none");
 
-            //document.getElementById("personChosen1_"+ (j*10 +i)).style.visibility = "hidden";
+            document.getElementById("personChosen1_"+ (j*10 +i)).style.visibility = "hidden";
             document.getElementById("precentage").innerHTML = "29.7";
             document.getElementById("dangerous").innerHTML = "Fall";
             document.getElementById("numberCases").innerHTML = "2358";
             document.getElementById("seasonName").innerHTML = "Fall";
         }
-    } 
+    }
+    
 
     //display the percentage of spring to whole year in specific city or default the whole USA
     function spring(n) {
@@ -1138,8 +1177,17 @@ function generateMapLegend(toggleOn){
         if (document.getElementById("circle") != null) {
             document.getElementById("circle").remove();
         }
+        
+        //number = Math.round(data[n]["spring"] / data[n]["max"] * 50);
+        var number;
+        if (n != 0 && n != 5 && n !=13 && n != 50) {
+            number = Math.round(data[n]["spring"]);
+        } else if (n == 5 || n == 13 || n == 50) {
+            number = Math.round(data[n]["spring"] / 2);
+        } else {
+            number = Math.round(data[n]["spring"] / 50);
+        }
 
-        number = Math.round(data[n]["spring"] / data[n]["max"] * 50);
         percent = d3.format(".1f")(data[n]["spring"] / data[n]["total"] * 100);
             
         svgSeason.append("circle").attr("r",4)
@@ -1147,6 +1195,7 @@ function generateMapLegend(toggleOn){
         .attr("cy", yScaleSeason(data[n].spring))
         .attr("id", "circle")
         .attr("fill", "orange");
+         console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -1158,7 +1207,7 @@ function generateMapLegend(toggleOn){
             document.getElementById("personChosen0_"+ i).style.visibility = "hidden";
             document.getElementById("personChosen1_"+ i).style.visibility = "hidden";
         }
-        document.getElementById("precentage").innerHTML =percent;
+        document.getElementById("precentage").innerHTML = percent;
         document.getElementById("numberCases").innerHTML = data[indexChosen]["spring"];
         document.getElementById("seasonName").innerHTML = "Spring";
             
@@ -1177,8 +1226,17 @@ function generateMapLegend(toggleOn){
         .attr("id", "circle")
         .attr("fill", "orange");
 
-        number = Math.round(data[n]["summer"] / data[n]["max"] * 50);
+        //number = Math.round(data[n]["summer"] / data[n]["max"] * 50);
+        var number;
+        if (n != 0 && n != 5 && n !=13 && n != 50) {
+            number = Math.round(data[n]["summer"]);
+        } else if (n == 5 || n == 13 || n == 50) {
+            number = Math.round(data[n]["summer"] / 2);
+        } else {
+            number = Math.round(data[n]["summer"] / 50);
+        }
         percent = d3.format(".1f")(data[n]["summer"] / data[n]["total"] * 100);
+        console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -1210,8 +1268,18 @@ function generateMapLegend(toggleOn){
         .attr("id", "circle")
         .attr("fill", "orange");
 
-        number = Math.round(data[n]["fall"] / data[n]["max"] * 50);
+        //number = Math.round(data[n]["fall"] / data[n]["max"] * 50);
+        var number;
+        if (n != 0 && n != 5 && n !=13 && n != 50) {
+            number = Math.round(data[n]["fall"]);
+        } else if (n == 5 || n == 13 || n == 50) {
+            number = Math.round(data[n]["fall"] / 2);
+        } else {
+            number = Math.round(data[n]["fall"] / 50);
+        }
         percent = d3.format(".1f")(data[n]["fall"] / data[n]["total"] * 100);
+
+         console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -1243,8 +1311,19 @@ function generateMapLegend(toggleOn){
         .attr("id", "circle")
         .attr("fill", "orange");
 
-        number = Math.round(data[n]["winter"] / data[n]["max"] * 50);
+        //number = Math.round(data[n]["winter"] / data[n]["max"] * 50);
+        var number;
+        if (n != 0 && n != 5 && n !=13 && n != 50) {
+            number = Math.round(data[n]["winter"]);
+        } else if (n == 5 || n == 13 || n == 50) {
+            number = Math.round(data[n]["winter"] / 2);
+        } else {
+            number = Math.round(data[n]["winter"] / 50);
+        }
+
         percent = d3.format(".1f")(data[n]["winter"] / data[n]["total"] * 100);
+
+         console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -1330,6 +1409,19 @@ function generateMapLegend(toggleOn){
     .attr("x",700)
     .attr("y",49)
     .text("number of hate crime cases in current city");
+
+    //legend for the people
+    svgSeason.append("path")
+    .attr("transform","scale(0.15),translate(" + (1700) + "," + (150) + ")")
+    .attr("d","M80 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.836 7.163-16 16-16s16 7.163 16 16z")
+    .attr("fill","none");
+    
+    svgSeason.append("path")
+    .attr("transform","scale(0.15),translate(" + (1700) + ","  + (150) + ")")
+    .attr("d","M57.778,128h12.445c5.4,0,9.778,-4.378,9.778,-9.778v-22.222h4.726c5.95,0,10.521,-5.27,9.679,-11.16l-5.206,-27.45c-0.688,-4.817,75.05477,-42.246,-9.679,-17.3867h-31.04c-4.866,0,-74.04885,-23.926,-9.15,16.8578l-5.735,27.98c-0.842,5.89,3.729,11.161,9.679,11.16h4.726v22.22c0,5.4,4.378,9.778,9.778,9.778Z")
+    .attr("fill","none");
+
+    
     
     // svgSeason.append("text")
     //     .attr("x",700)
