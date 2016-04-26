@@ -25,6 +25,20 @@
         font-weight: bold;
         font-size:15px;
     }
+
+    div.tooltip {   
+        position: absolute;           
+        text-align: center;           
+        width: auto;                  
+        height: auto;                 
+        padding: 2px;             
+        font: 12px sans-serif;        
+        background: lightsteelblue;   
+        border: 0px;      
+        border-radius: 8px;           
+        pointer-events: none;         
+    }
+
     .svg1 {
         width: 75%;
         /*margin: 0 auto;*/
@@ -302,7 +316,7 @@
     <br><br><br><br>
     Although we often like to think of the US as a place of acceptance, hate crimes and bias incidents are still unfortunately prevalent.  In 2013, there were <span class="emphasize"> 6,921 hate crimes </span> reported to the FBI.  These crimes were perpetrated and recorded on the basis of race, ethnicity, religion, gender and gender identity, disability and sexual-orientation.
     <br><br>
-    These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The adjacent pie chart shows breakdown by motivation, the map illustrates the worst offending cities by type, with the graphic below showing seasonal variation in crime volume.
+    These crimes are not uniformly distributed by type, location or season.  This project takes a look at hate crime statistics from the worst offending cities in the US.  The various motivations are recorded when incidents target a person or group for specific characteristics.  For example, a religious hate crime is reported when a crime is carried out because the offending party is targeting people or persons of a specific religion, because of the victim's religion.
 </div>
 <div id="right"></div>
 </div>
@@ -426,9 +440,24 @@
                 .append("g")
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+            var tooltip = d3.select("body").append("div")   
+                .attr("class", "tooltip")               
+                .style("opacity", 0);
+
+            //tooltip advice from this jsfiddle: http://jsfiddle.net/WLYUY/5/
             var path = svg.selectAll("path")
                 .data(groups)
-                .enter().append("path")
+                .enter().append("path").attr("class", "slice")
+                // .on("mouseover", function(d) {console.log(d.data + ", " + d.value); return d;})
+                .on("mouseover", function(d) {      
+                    tooltip.transition().duration(200).style("opacity", .9);      
+                    tooltip.html(d.data + ", " + d.value)  
+                      .style("left", (d3.event.pageX) + "px")     
+                      .style("top", (d3.event.pageY) + "px");    
+                  })                  
+                  .on("mouseout", function(d) {       
+                    tooltip.transition().duration(500).style("opacity", 0);   
+                  })
                 .style("fill", color)
                 .each(function() { this._current = {startAngle: 0, endAngle: 0}; });
 
