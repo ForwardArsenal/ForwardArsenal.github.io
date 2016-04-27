@@ -8,7 +8,6 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
-<!-- @@@ -->
 <style>
    /* The overview's style */
     body { font-family: "Roboto Slab"; color: #333;}
@@ -348,8 +347,7 @@
         <input id="toggle" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" value="true">
         <label for="toggle"></label>
     </div>
-   <!--  <p id ="Ratio">Absolute Number</p>  -->
-    <p id ="TypeChosen">Cities with the highest number of crimes motivated by <span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span></p>
+    <p id ="TypeChosen">Cities with the highest number of crimes motivated by &nbsp<span id = "typeChosen"  style = "color: red; font-weight:bold; font-size:20px"></span></p>
     </div>   
 </div>
 <div id="map"></div>
@@ -406,11 +404,11 @@
             states.forEach(function(d) { state.set(d["Agency Name"], d); });
             dispatch.load(state);
             dispatch.statechange(state.get("USA"));
-            //part1Data = state.values();            
+            part1Data = state.values();         
         });
-        //console.log(part1Data);
 
         // builds the drop down menu
+        
         dispatch.on("load.menu", function(state) {
             var select = d3.select("#right")
             .append("div")
@@ -464,16 +462,13 @@
             var path = svg.selectAll("path")
                 .data(groups)
                 .enter().append("path").attr("class", "slice")
-                // .on("mouseover", function(d) {console.log(d.data + ", " + d.value); return d;})
-                .on("mouseover", function(d) {      
+                .on("mouseover", function(d) {    
                     tooltip.transition().duration(200).style("opacity", .9);      
-                    tooltip.html(d.data + ", " + d.value)  
+                    tooltip.html("Type: " + d.data + ";   Number: " + d.value + ";   Percentage: " + d3.round(d.value/total * 100,1) + "%")  
                       .style("left", (d3.event.pageX) + "px")     
                       .style("top", (d3.event.pageY) + "px")
                       .style("background-color", "#e7e7e7")
                       .style("opacity", 0.8);   
-
-                      console.log(d.data); 
                   })                  
                   .on("mouseout", function(d) {       
                     tooltip.transition().duration(500).style("opacity", 0);   
@@ -500,31 +495,32 @@
                 });                                                  
 
             // refreshes the pie chart and labels with new information
+            var total = 0;
             dispatch.on("statechange.pie", function(d) {
-                path.data(pie.value(function(g) {
-                    // console.log("Ran again: " + d[g]); 
 
+                total = Number(d["Race"]) + Number(d["Religion"]) + Number(d["Sexual Orientation"]) + Number(d["Disability"]) + Number(d["Ethnicity"]) + Number(d["Gender"]);
+
+                path.data(pie.value(function(g) {
                     // clear the existing legend                            
                     legend.text("");
 
                     //re draw the legend with new information
                     legend.append('rect')                                
-                    .attr('width', legendSize)                    
+                    .attr('width', legendSize - 5)                    
                     .attr('height', legendSize)                       
                     .style('fill', color)                                   
                     .style('stroke', color); 
 
                     legend.append('text')                                     
-                    .attr('x', legendSize + spacing)              
+                    .attr('x', legendSize + spacing - 5)              
                     .attr('y', legendSize - spacing)              
-                    .text(function(e) { return e + ", " + d[e]; });   
+                    .text(function(e) { return e + ", " + d[e] + ", " + d3.round(d[e]/total * 100,1) + "%";});   
                     return d[g];
                 })(groups)).transition()
                     .attrTween("d", function(d) {
                         var interpolate = d3.interpolate(this._current, d);
                         this._current = interpolate(0);
                         return function(t) {
-                            // console.log("this function ran again");
                             return arc(interpolate(t));
                         };
                     });                 
@@ -761,8 +757,6 @@ function displayLocations(rows, crimeType, topNum, toggleOn){
     //the color scale is used to scale the number or ratio of criminal events happened in each city
     var colorScale = d3.scale.linear()
     .domain(input)
-    // .range([ "#F7FE2E", "#fed976", "#feb24c", "#FE642E", "#FE2E2E", "#bd0026" ]);
-    // .range([ "#f7f4f9", "#d4b9da", "#df65b0", "#e7298a", "#ce1256", "#91003f" ]);
     .range([ "#fcbba1", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
     //add longitude and latitude to every city in the filtered array
     d3.csv("../data/us-cities.csv", function(error, cities){
@@ -846,8 +840,7 @@ function displayDonutChart(ratios){
 
 	var lheight = 100;
 	var lwidth = 220;
-	//"#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"
-    //"red", "green", "blue", "yellow", "purple", "grey"
+
 	var colorScale = d3.scale.ordinal().domain(crimes).range(["#1395BA", "#A2B86C", "#EBC844", "#F16C20", "#C02E1D", "#0D3C55"]);
     
     var arc = d3.svg.arc()
@@ -928,11 +921,7 @@ function generateDonutChartLegend(svg){
 
 function generateMapLegend(toggleOn){
 	d3.selectAll(".legendText").remove();
-    // .range([ "#f7f4f9", "#d4b9da", "#df65b0", "#e7298a", "#ce1256", "#91003f" ]);
-    // add longitude and latitude to every city in the filtered array
-    // var rectInfo = [{ x: 610, y: 0, color: "#F7FE2E"}, { x: 680, y: 0, color: "#fed976" }, { x: 750, y: 0, color: "#feb24c" }, 
-    // { x: 820, y: 0, color: "#FE642E" }, { x: 890, y: 0, color: "#FE2E2E" }, { x: 960, y: 0, color: "#bd0026" }];
-    //.range([ "#fee0d2", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
+
     var rectInfo = [{ x: 610, y: 0, color: "#fcbba1"}, { x: 680, y: 0, color: "#fb6a4a" }, { x: 750, y: 0, color: "#ef3b2c" }, 
     { x: 820, y: 0, color: "#cb181d" }, { x: 890, y: 0, color: "#a50f15" }, { x: 960, y: 0, color: "#67000d" }];
 
@@ -1233,7 +1222,6 @@ function generateMapLegend(toggleOn){
             document.getElementById("circle").remove();
         }
         
-        //number = Math.round(data[n]["spring"] / data[n]["max"] * 50);
         var number;
         if (n != 0 && n != 5 && n !=13 && n != 50) {
             number = Math.round(data[n]["spring"]);
@@ -1280,7 +1268,6 @@ function generateMapLegend(toggleOn){
         .attr("id", "circle")
         .attr("fill", "orange");
 
-        //number = Math.round(data[n]["summer"] / data[n]["max"] * 50);
         var number;
         if (n != 0 && n != 5 && n !=13 && n != 50) {
             number = Math.round(data[n]["summer"]);
@@ -1321,7 +1308,6 @@ function generateMapLegend(toggleOn){
         .attr("id", "circle")
         .attr("fill", "orange");
 
-        //number = Math.round(data[n]["fall"] / data[n]["max"] * 50);
         var number;
         if (n != 0 && n != 5 && n !=13 && n != 50) {
             number = Math.round(data[n]["fall"]);
@@ -1331,8 +1317,6 @@ function generateMapLegend(toggleOn){
             number = Math.round(data[n]["fall"] / 50);
         }
         percent = d3.format(".1f")(data[n]["fall"] / data[n]["total"] * 100);
-
-         console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
@@ -1364,7 +1348,6 @@ function generateMapLegend(toggleOn){
         .attr("id", "circle")
         .attr("fill", "orange");
 
-        //number = Math.round(data[n]["winter"] / data[n]["max"] * 50);
         var number;
         if (n != 0 && n != 5 && n !=13 && n != 50) {
             number = Math.round(data[n]["winter"]);
@@ -1375,8 +1358,6 @@ function generateMapLegend(toggleOn){
         }
 
         percent = d3.format(".1f")(data[n]["winter"] / data[n]["total"] * 100);
-
-         console.log("number for this season is" + number);
 
         for (var i = 0; i < number; i++) {
             document.getElementById("personChosen0_"+ i).style.visibility = "visible";
