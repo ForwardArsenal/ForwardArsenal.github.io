@@ -30,7 +30,7 @@
         position: absolute;           
         text-align: center;           
         width: auto;                  
-        height: auto;                 
+        height: auto;               
         padding: 2px;             
         font: 12px sans-serif;        
         background: lightsteelblue;   
@@ -464,7 +464,7 @@
                 .enter().append("path").attr("class", "slice")
                 .on("mouseover", function(d) {    
                     tooltip.transition().duration(200).style("opacity", .9);      
-                    tooltip.html("Type: " + d.data + ";   Number: " + d.value + ";   Percentage: " + d3.round(d.value/total * 100,1) + "%")  
+                    tooltip.html("Type: " + d.data + ";    " + "Number: " + d.value + ";    " + "Percentage: " + d3.round(d.value/total * 100,1) + "%")  
                       .style("left", (d3.event.pageX) + "px")     
                       .style("top", (d3.event.pageY) + "px")
                       .style("background-color", "#e7e7e7")
